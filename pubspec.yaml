@@ -1,5 +1,5 @@
 name: el_madradja_assaadia
-description: A new Flutter project.
+description: El Madradja Assaadia
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -31,6 +31,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_downloader: ^1.10.1+2
+  path_provider: ^2.0.11
+  audioplayers: ^3.0.0
 
 
   # The following adds the Cupertino Icons font to your application.
