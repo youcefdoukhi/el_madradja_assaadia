@@ -260,45 +260,45 @@ class MyHomePageState extends State<MyHomePage> {
     _items = [];
 
     _tasks!.addAll(
-      DownloadItems.documents.map(
-        (document) => TaskInfo(name: document.name, link: document.url),
+      DownloadItems.book01.map(
+        (darss) => TaskInfo(name: darss.name, link: darss.url),
       ),
     );
 
-    _items.add(ItemHolder(name: 'Documents'));
+    _items.add(ItemHolder(name: 'منهج السالكين'));
     for (var i = count; i < _tasks!.length; i++) {
       _items.add(ItemHolder(name: _tasks![i].name, task: _tasks![i]));
       count++;
     }
 
     _tasks!.addAll(
-      DownloadItems.images
-          .map((image) => TaskInfo(name: image.name, link: image.url)),
+      DownloadItems.book02
+          .map((darss) => TaskInfo(name: darss.name, link: darss.url)),
     );
 
-    _items.add(ItemHolder(name: 'Images'));
+    _items.add(ItemHolder(name: 'منظومة القواعد الفقهية'));
     for (var i = count; i < _tasks!.length; i++) {
       _items.add(ItemHolder(name: _tasks![i].name, task: _tasks![i]));
       count++;
     }
 
     _tasks!.addAll(
-      DownloadItems.videos
-          .map((video) => TaskInfo(name: video.name, link: video.url)),
+      DownloadItems.book03
+          .map((darss) => TaskInfo(name: darss.name, link: darss.url)),
     );
 
-    _items.add(ItemHolder(name: 'Videos'));
+    _items.add(ItemHolder(name: 'رسالة لطيفة في أصول الفقه'));
     for (var i = count; i < _tasks!.length; i++) {
       _items.add(ItemHolder(name: _tasks![i].name, task: _tasks![i]));
       count++;
     }
 
     _tasks!.addAll(
-      DownloadItems.apks
-          .map((video) => TaskInfo(name: video.name, link: video.url)),
+      DownloadItems.book04
+          .map((darss) => TaskInfo(name: darss.name, link: darss.url)),
     );
 
-    _items.add(ItemHolder(name: 'APKs'));
+    _items.add(ItemHolder(name: 'الإرشاد إلى معرفة الأحكام'));
     for (var i = count; i < _tasks!.length; i++) {
       _items.add(ItemHolder(name: _tasks![i].name, task: _tasks![i]));
       count++;

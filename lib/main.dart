@@ -12,7 +12,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  static const _title = 'flutter_downloader demo';
+  static const _title = 'برنامج المدرجة السعدية إلى فقه الشريعة';
 
   @override
   Widget build(BuildContext context) {
