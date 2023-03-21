@@ -6,11 +6,10 @@ Future<String> createFolderInAppDocDir(String folderName) async {
   final Directory appDocDir = await getApplicationDocumentsDirectory();
   final Directory appDocDirFolder = Directory('${appDocDir.path}/$folderName');
 
-  if (await appDocDirFolder.exists()) {
+  if (appDocDirFolder.existsSync()) {
     return appDocDirFolder.path;
   } else {
-    final Directory appDocDirNewFolder =
-        await appDocDirFolder.create(recursive: true);
+    final Directory appDocDirNewFolder = await appDocDirFolder.create();
     return appDocDirNewFolder.path;
   }
 }
