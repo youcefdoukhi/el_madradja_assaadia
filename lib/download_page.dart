@@ -11,18 +11,16 @@ import 'download_list_item.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class MyHomePage extends StatefulWidget with WidgetsBindingObserver {
-  const MyHomePage({super.key, required this.title, required this.platform});
+class MyDownloadPage extends StatefulWidget with WidgetsBindingObserver {
+  const MyDownloadPage({super.key, required this.platform});
 
   final TargetPlatform? platform;
 
-  final String title;
-
   @override
-  MyHomePageState createState() => MyHomePageState();
+  MyDownloadPageState createState() => MyDownloadPageState();
 }
 
-class MyHomePageState extends State<MyHomePage> {
+class MyDownloadPageState extends State<MyDownloadPage> {
   List<TaskInfo>? _tasks;
   late List<ItemHolder> _items;
   late bool _showContent;
@@ -354,7 +352,7 @@ class MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text("Download"),
         actions: [
           if (Platform.isIOS)
             PopupMenuButton<Function>(
