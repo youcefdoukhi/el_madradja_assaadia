@@ -16,9 +16,7 @@ dependencies:
   audioplayers: ^3.0.0
 
   cupertino_icons: ^1.0.2
-  permission_handler: ^10.1.0
-  android_path_provider: ^0.3.0
-  device_info_plus: ^8.1.0
+
   flutter_localizations:
     sdk: flutter
   flutter_native_splash: ^2.2.19

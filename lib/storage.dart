@@ -7,6 +7,7 @@ Future<String> createFolderInAppDocDir(String folderName) async {
   final Directory appDocDirFolder = Directory('${appDocDir.path}/$folderName');
 
   if (appDocDirFolder.existsSync()) {
+    // .absolute.path
     return appDocDirFolder.path;
   } else {
     final Directory appDocDirNewFolder = await appDocDirFolder.create();

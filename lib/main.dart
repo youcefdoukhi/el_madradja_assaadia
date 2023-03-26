@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 //import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'about.dart';
+import 'about2.dart';
 import 'download_page.dart';
 
 void main() async {
@@ -161,6 +162,67 @@ class MainWidget extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => const About()),
+                              ),
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const FractionallySizedBox(
+                widthFactor: 0.8,
+                child: Divider(
+                  thickness: 0.5,
+                ),
+              ),
+              IntrinsicHeight(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.width / 3,
+                      width: MediaQuery.of(context).size.width / 3,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.fill,
+                          image: Image.asset(
+                            'images/btn.png',
+                          ).image,
+                        ),
+                      ),
+                      child: Stack(
+                        children: [
+                          Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const <Widget>[
+                                Icon(
+                                  Icons.info_outline,
+                                  //color: Colors.white,
+                                  color: Color(0xFFD4B37C),
+                                ),
+                                Text(
+                                  "2 عن التطبيق",
+                                  textDirection: TextDirection.rtl,
+                                  textAlign: TextAlign.justify,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: "ScheherazadeNew",
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () => {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const About2()),
                               ),
                             },
                           ),

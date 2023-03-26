@@ -2,14 +2,11 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
-import 'package:android_path_provider/android_path_provider.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:path_provider/path_provider.dart';
 import 'data.dart';
 import 'download_list_item.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class MyDownloadPage extends StatefulWidget with WidgetsBindingObserver {
   const MyDownloadPage({super.key, required this.platform});
@@ -24,7 +21,6 @@ class MyDownloadPageState extends State<MyDownloadPage> {
   List<TaskInfo>? _tasks;
   late List<ItemHolder> _items;
   late bool _showContent;
-  late bool _permissionReady;
   late String _localPath;
   final ReceivePort _port = ReceivePort();
 
@@ -37,7 +33,6 @@ class MyDownloadPageState extends State<MyDownloadPage> {
     FlutterDownloader.registerCallback(downloadCallback, step: 1);
 
     _showContent = false;
-    _permissionReady = false;
 
     _prepare();
   }
@@ -81,7 +76,6 @@ class MyDownloadPageState extends State<MyDownloadPage> {
   @pragma('vm:entry-point')
   static void downloadCallback(
     String id,
-    //int status,
     DownloadTaskStatus status,
     int progress,
   ) {
@@ -139,48 +133,6 @@ class MyDownloadPageState extends State<MyDownloadPage> {
     );
   }
 
-  Widget _buildNoPermissionWarning() {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24),
-            child: Text(
-              'Grant storage permission to continue',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.blueGrey, fontSize: 18),
-            ),
-          ),
-          const SizedBox(height: 32),
-          TextButton(
-            onPressed: _retryRequestPermission,
-            child: const Text(
-              'Retry',
-              style: TextStyle(
-                color: Colors.blue,
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Future<void> _retryRequestPermission() async {
-    final hasGranted = await _checkPermission();
-
-    if (hasGranted) {
-      await _prepareSaveDir();
-    }
-
-    setState(() {
-      _permissionReady = hasGranted;
-    });
-  }
-
   Future<void> _requestDownload(TaskInfo task) async {
     task.taskId = await FlutterDownloader.enqueue(
       url: task.link!,
@@ -215,35 +167,19 @@ class MyDownloadPageState extends State<MyDownloadPage> {
   }
 
   Future<void> _delete(TaskInfo task) async {
+    final mytask = FlutterDownloader.loadTasksWithRawQuery(
+      query: 'SELECT file_name FROM task WHERE taskId=${task.taskId}',
+    );
+    // await entity.exists();
+    print("----------  : $mytask");
     await FlutterDownloader.remove(
       taskId: task.taskId!,
-      shouldDeleteContent: true,
+      shouldDeleteContent: false,
     );
+
+    //await File("").delete();
     await _prepare();
     setState(() {});
-  }
-
-  Future<bool> _checkPermission() async {
-    if (Platform.isIOS) {
-      return true;
-    }
-
-    if (Platform.isAndroid) {
-      final info = await DeviceInfoPlugin().androidInfo;
-      if (info.version.sdkInt > 28) {
-        return true;
-      }
-
-      final status = await Permission.storage.status;
-      if (status.isGranted) {
-        return true;
-      }
-
-      final result = await Permission.storage.request();
-      return result.isGranted;
-    }
-
-    throw StateError('unknown platform');
   }
 
   Future<void> _prepare() async {
@@ -313,11 +249,7 @@ class MyDownloadPageState extends State<MyDownloadPage> {
       }
     }
 
-    _permissionReady = await _checkPermission();
-    if (_permissionReady) {
-      await _prepareSaveDir();
-    }
-
+    await _prepareSaveDir();
     setState(() {
       _showContent = true;
     });
@@ -325,27 +257,26 @@ class MyDownloadPageState extends State<MyDownloadPage> {
 
   Future<void> _prepareSaveDir() async {
     _localPath = (await _getSavedDir())!;
-    final savedDir = Directory(_localPath);
+    final savedDir = Directory("$_localPath/MP3");
     if (!savedDir.existsSync()) {
       await savedDir.create();
     }
   }
 
   Future<String?> _getSavedDir() async {
-    String? externalStorageDirPath;
+    String? storageDirPath;
 
     if (Platform.isAndroid) {
       try {
-        externalStorageDirPath = await AndroidPathProvider.downloadsPath;
+        storageDirPath =
+            (await getApplicationDocumentsDirectory()).absolute.path;
       } catch (err) {
-        final directory = await getExternalStorageDirectory();
-        externalStorageDirPath = directory?.path;
+        return null;
       }
     } else if (Platform.isIOS) {
-      externalStorageDirPath =
-          (await getApplicationDocumentsDirectory()).absolute.path;
+      storageDirPath = (await getApplicationDocumentsDirectory()).absolute.path;
     }
-    return externalStorageDirPath;
+    return storageDirPath;
   }
 
   @override
@@ -380,9 +311,7 @@ class MyDownloadPageState extends State<MyDownloadPage> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          return _permissionReady
-              ? _buildDownloadList()
-              : _buildNoPermissionWarning();
+          return _buildDownloadList();
         },
       ),
     );
