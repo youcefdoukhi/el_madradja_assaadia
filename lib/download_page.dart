@@ -163,7 +163,8 @@ class MyDownloadPageState extends State<MyDownloadPage> {
       return false;
     }
 
-    return FlutterDownloader.open(taskId: taskId);
+    //return FlutterDownloader.open(taskId: taskId);
+    return false;
   }
 
   Future<void> _delete(TaskInfo task) async {
@@ -263,8 +264,9 @@ class MyDownloadPageState extends State<MyDownloadPage> {
   }
 
   Future<void> _prepareSaveDir() async {
-    _localPath = (await _getSavedDir())!;
-    final savedDir = Directory("$_localPath/MP3");
+    String localPath0 = (await _getSavedDir())!;
+    _localPath = "$localPath0/MP3";
+    final savedDir = Directory(_localPath);
     if (!savedDir.existsSync()) {
       await savedDir.create();
     }
