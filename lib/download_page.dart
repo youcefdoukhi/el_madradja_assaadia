@@ -167,17 +167,24 @@ class MyDownloadPageState extends State<MyDownloadPage> {
   }
 
   Future<void> _delete(TaskInfo task) async {
-    final mytask = FlutterDownloader.loadTasksWithRawQuery(
-      query: 'SELECT file_name FROM task WHERE taskId=${task.taskId}',
+    final mytask = await FlutterDownloader.loadTasksWithRawQuery(
+      query: 'SELECT * FROM task WHERE task_id="${task.taskId}"',
     );
-    // await entity.exists();
-    print("----------  : $mytask");
+    if (mytask != null) {
+      var myFile = File("${mytask[0].savedDir}/${mytask[0].filename}");
+      bool bl1 = await myFile.exists();
+      if (bl1) {
+        try {
+          await myFile.delete();
+        } catch (e) {
+          print("File delete problem");
+        }
+      }
+    }
     await FlutterDownloader.remove(
       taskId: task.taskId!,
       shouldDeleteContent: false,
     );
-
-    //await File("").delete();
     await _prepare();
     setState(() {});
   }
