@@ -9,6 +9,14 @@ class About extends StatelessWidget {
   Widget build(BuildContext context) {
     final player = AudioPlayer();
 
+    f() async {
+      String path = (await getApplicationDocumentsDirectory()).absolute.path;
+      String s = "$path/MP3/01_01.mp3";
+      await player.setUrl('file:$s');
+    }
+
+    f();
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -51,12 +59,14 @@ class About extends StatelessWidget {
                         icon: const Icon(Icons.play_circle),
                         tooltip: 'Play',
                         onPressed: () async {
+                          /*
                           String path =
                               (await getApplicationDocumentsDirectory())
                                   .absolute
                                   .path;
                           String s = "$path/MP3/01_01.mp3";
                           await player.setUrl('file:$s');
+                          */
                           await player.play();
                         },
                       ),
