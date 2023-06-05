@@ -59,14 +59,7 @@ class About extends StatelessWidget {
                         icon: const Icon(Icons.play_circle),
                         tooltip: 'Play',
                         onPressed: () async {
-                          /*
-                          String path =
-                              (await getApplicationDocumentsDirectory())
-                                  .absolute
-                                  .path;
-                          String s = "$path/MP3/01_01.mp3";
-                          await player.setUrl('file:$s');
-                          */
+                         
                           await player.play();
                         },
                       ),

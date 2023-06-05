@@ -76,11 +76,11 @@ class MyDownloadPageState extends State<MyDownloadPage> {
   @pragma('vm:entry-point')
   static void downloadCallback(
     String id,
-    DownloadTaskStatus status,
+    int status,
     int progress,
   ) {
     IsolateNameServer.lookupPortByName('downloader_send_port')
-        ?.send([id, status.value, progress]);
+        ?.send([id, status, progress]);
   }
 
   Widget _buildDownloadList() {
@@ -178,7 +178,7 @@ class MyDownloadPageState extends State<MyDownloadPage> {
         try {
           await myFile.delete();
         } catch (e) {
-          print("File delete problem");
+          //print("File delete problem");
         }
       }
     }

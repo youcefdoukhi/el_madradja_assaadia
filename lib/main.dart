@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-//import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/services.dart';
 import 'about.dart';
 import 'about2.dart';
 import 'download_page.dart';
 
-void main() async {
-  //WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  //FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
-
-  runApp(const MyApp());
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -81,10 +84,10 @@ class MainWidget extends StatelessWidget {
                       ),
                       child: Stack(
                         children: [
-                          Center(
+                          const Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: const <Widget>[
+                              children: <Widget>[
                                 Icon(
                                   Icons.download,
                                   color: Color(0xFFD4B37C),
@@ -96,7 +99,6 @@ class MainWidget extends StatelessWidget {
                                   textAlign: TextAlign.justify,
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontFamily: "ScheherazadeNew",
                                     fontSize: 13,
                                   ),
                                 ),
@@ -134,10 +136,10 @@ class MainWidget extends StatelessWidget {
                       ),
                       child: Stack(
                         children: [
-                          Center(
+                          const Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: const <Widget>[
+                              children: <Widget>[
                                 Icon(
                                   Icons.info_outline,
                                   //color: Colors.white,
@@ -149,7 +151,6 @@ class MainWidget extends StatelessWidget {
                                   textAlign: TextAlign.justify,
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontFamily: "ScheherazadeNew",
                                     fontSize: 13,
                                   ),
                                 ),
@@ -195,10 +196,10 @@ class MainWidget extends StatelessWidget {
                       ),
                       child: Stack(
                         children: [
-                          Center(
+                          const Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: const <Widget>[
+                              children: <Widget>[
                                 Icon(
                                   Icons.info_outline,
                                   //color: Colors.white,
@@ -210,7 +211,6 @@ class MainWidget extends StatelessWidget {
                                   textAlign: TextAlign.justify,
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontFamily: "ScheherazadeNew",
                                     fontSize: 13,
                                   ),
                                 ),
