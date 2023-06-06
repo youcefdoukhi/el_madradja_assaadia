@@ -1,15 +1,19 @@
+import 'package:el_madradja_assaadia/state_data.dart';
+import 'package:el_madradja_assaadia/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
-import 'about.dart';
 import 'about2.dart';
 import 'download_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
   runApp(
     const ProviderScope(
@@ -25,18 +29,47 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      localizationsDelegates: [
+    return MaterialApp(
+      localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: <Locale>[
+      supportedLocales: const <Locale>[
         Locale('ar', ''),
       ],
-      locale: Locale('ar'),
+      locale: const Locale('ar'),
       title: _title,
-      home: MainWidget(),
+      home: Consumer(
+        builder: (context, ref, child) {
+          final dataKitab01 = ref.watch(dataProvider);
+          return dataKitab01.when(
+            data: (objets4) {
+              return const MainWidget();
+            },
+            loading: () => Scaffold(
+              body: SafeArea(
+                child: Container(
+                  height: double.infinity,
+                  width: double.infinity,
+                  padding: const EdgeInsets.only(top: 100),
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 251, 251, 251),
+                    image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: Image.asset(
+                        'images/fond2.png',
+                      ).image,
+                    ),
+                  ),
+                  child: const Center(child: CircularProgressIndicator()),
+                ),
+              ),
+            ),
+            error: (error, _) => Text('Error: $error'),
+          );
+        },
+      ),
     );
   }
 }
@@ -162,7 +195,9 @@ class MainWidget extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const About()),
+                                    //builder: (context) => const About()),
+                                    builder: (context) =>
+                                        const AudioPlayerExample()),
                               ),
                             },
                           ),

@@ -1,21 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:just_audio/just_audio.dart';
+//import 'package:path_provider/path_provider.dart';
+//import 'package:just_audio/just_audio.dart';
 
 class About extends StatelessWidget {
   const About({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final player = AudioPlayer();
-
-    f() async {
-      String path = (await getApplicationDocumentsDirectory()).absolute.path;
-      String s = "$path/MP3/01_01.mp3";
-      await player.setUrl('file:$s');
-    }
-
-    f();
+    // final player = AudioPlayer();
 
     return Scaffold(
       body: SafeArea(
@@ -59,15 +51,27 @@ class About extends StatelessWidget {
                         icon: const Icon(Icons.play_circle),
                         tooltip: 'Play',
                         onPressed: () async {
-                         
-                          await player.play();
+                          //  String path =
+                          //      (await getApplicationDocumentsDirectory())
+                          //         .absolute
+                          //          .path;
+                          //String s = "$path/MP3/01_01.mp3";
+                          //  await player.setUrl('file:$s');
+                          //   await player.play();
                         },
                       ),
                       IconButton(
                         icon: const Icon(Icons.stop_circle),
                         tooltip: 'Stop',
                         onPressed: () {
-                          player.pause();
+                          //    player.pause();
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.pause_circle),
+                        tooltip: 'Pause',
+                        onPressed: () {
+                          //    player.pause();
                         },
                       ),
                     ],
@@ -80,4 +84,16 @@ class About extends StatelessWidget {
       ),
     );
   }
+}
+
+class MySingleton {
+  static final MySingleton _singleton = MySingleton._internal();
+
+  factory MySingleton() {
+    return _singleton;
+  }
+
+  MySingleton._internal();
+
+  // Ajoutez ici le code spécifique de votre Singleton
 }
