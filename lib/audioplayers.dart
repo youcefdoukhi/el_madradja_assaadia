@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 class AudioPlayerExample extends StatefulWidget {
   const AudioPlayerExample({super.key});
@@ -22,11 +23,14 @@ class AudioPlayerExampleState extends State<AudioPlayerExample> {
 
   Future<void> initialiserVariableAsynchrone() async {
     String path = (await getApplicationDocumentsDirectory()).absolute.path;
-    String s = "$path/MP3/01_01.mp3";
-    audioPlayer.setSourceDeviceFile(s);
-    setState(() {
-      audioPath = s;
-    });
+    String filePath = "$path/MP3/01_01.mp3";
+    File file = File(filePath);
+    if (file.existsSync()) {
+      setState(() {
+        audioPath = filePath;
+      });
+      audioPlayer.setSourceDeviceFile(audioPath);
+    } else {}
   }
 
   @override
@@ -36,12 +40,7 @@ class AudioPlayerExampleState extends State<AudioPlayerExample> {
   }
 
   void playAudio() async {
-    await audioPlayer.stop();
-    await audioPlayer.resume();
-  }
-
-  void resumeAudio() async {
-    await audioPlayer.resume();
+    await audioPlayer.play(DeviceFileSource(audioPath));
   }
 
   void pauseAudio() async {
@@ -53,7 +52,7 @@ class AudioPlayerExampleState extends State<AudioPlayerExample> {
   }
 
   void seekAudio() async {
-    await audioPlayer.seek(const Duration(seconds: 12));
+    await audioPlayer.seek(const Duration(seconds: 120));
   }
 
   void releaseAudio() async {
@@ -82,13 +81,6 @@ class AudioPlayerExampleState extends State<AudioPlayerExample> {
               },
             ),
             IconButton(
-              icon: const Icon(Icons.play_arrow),
-              tooltip: 'Resume',
-              onPressed: () {
-                resumeAudio();
-              },
-            ),
-            IconButton(
               icon: const Icon(Icons.pause_circle),
               tooltip: 'Pause',
               onPressed: () {
@@ -110,22 +102,60 @@ class AudioPlayerExampleState extends State<AudioPlayerExample> {
               },
             ),
             IconButton(
-              icon: const Icon(Icons.stop_screen_share),
+              icon: const Icon(Icons.clear_sharp),
               tooltip: 'Release',
               onPressed: () {
                 releaseAudio();
               },
             ),
-            IconButton(
+            /* IconButton(
               icon: const Icon(Icons.clear_all),
               tooltip: 'Dispose',
               onPressed: () {
                 disposeAudio();
               },
+            ),*/
+            IconButton(
+              icon: const Icon(Icons.add_circle),
+              tooltip: '+',
+              onPressed: () {},
             ),
           ],
         ),
       ),
     );
+  }
+}
+
+class MyAudioPlayer {
+  static final MyAudioPlayer _singleton = MyAudioPlayer._internal();
+
+  factory MyAudioPlayer() {
+    return _singleton;
+  }
+
+  late AudioPlayer _audioPlayer;
+  MyAudioPlayer._internal() {
+    _audioPlayer = AudioPlayer();
+  }
+
+  void play(Source src) {
+    _audioPlayer.play(src);
+  }
+
+  void pause() {
+    _audioPlayer.pause();
+  }
+
+  void stop() {
+    _audioPlayer.stop();
+  }
+
+  void release(String url) {
+    _audioPlayer.release();
+  }
+
+  void dispose() {
+    _audioPlayer.dispose();
   }
 }
