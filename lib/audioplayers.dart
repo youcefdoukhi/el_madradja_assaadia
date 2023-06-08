@@ -1,70 +1,16 @@
-import 'package:audioplayers/audioplayers.dart';
+import 'package:el_madradja_assaadia/state_data.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AudioPlayerExample extends StatefulWidget {
+class AudioPlayerExample extends ConsumerWidget {
   const AudioPlayerExample({super.key});
 
   @override
-  AudioPlayerExampleState createState() => AudioPlayerExampleState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final audioPlayer = ref.read(playerProvider);
 
-class AudioPlayerExampleState extends State<AudioPlayerExample> {
-  late AudioPlayer audioPlayer;
-  late String audioPath;
+    audioPlayer.setSource("/MP3/01_01.mp3");
 
-  @override
-  void initState() {
-    super.initState();
-    audioPlayer = AudioPlayer();
-    initialiserVariableAsynchrone();
-  }
-
-  Future<void> initialiserVariableAsynchrone() async {
-    String path = (await getApplicationDocumentsDirectory()).absolute.path;
-    String filePath = "$path/MP3/01_01.mp3";
-    File file = File(filePath);
-    if (file.existsSync()) {
-      setState(() {
-        audioPath = filePath;
-      });
-      audioPlayer.setSourceDeviceFile(audioPath);
-    } else {}
-  }
-
-  @override
-  void dispose() {
-    audioPlayer.dispose();
-    super.dispose();
-  }
-
-  void playAudio() async {
-    await audioPlayer.play(DeviceFileSource(audioPath));
-  }
-
-  void pauseAudio() async {
-    await audioPlayer.pause();
-  }
-
-  void stopAudio() async {
-    await audioPlayer.stop();
-  }
-
-  void seekAudio() async {
-    await audioPlayer.seek(const Duration(seconds: 120));
-  }
-
-  void releaseAudio() async {
-    await audioPlayer.release();
-  }
-
-  void disposeAudio() async {
-    await audioPlayer.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Audio Player'),
@@ -77,48 +23,36 @@ class AudioPlayerExampleState extends State<AudioPlayerExample> {
               icon: const Icon(Icons.play_circle),
               tooltip: 'Play',
               onPressed: () {
-                playAudio();
+                audioPlayer.play();
               },
             ),
             IconButton(
               icon: const Icon(Icons.pause_circle),
               tooltip: 'Pause',
               onPressed: () {
-                pauseAudio();
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.stop_circle),
-              tooltip: 'Stop',
-              onPressed: () {
-                stopAudio();
+                audioPlayer.pause();
               },
             ),
             IconButton(
               icon: const Icon(Icons.next_plan),
               tooltip: 'Seek',
               onPressed: () {
-                seekAudio();
+                audioPlayer.seek(0, 0, 50);
               },
             ),
             IconButton(
-              icon: const Icon(Icons.clear_sharp),
-              tooltip: 'Release',
-              onPressed: () {
-                releaseAudio();
-              },
-            ),
-            /* IconButton(
-              icon: const Icon(Icons.clear_all),
-              tooltip: 'Dispose',
-              onPressed: () {
-                disposeAudio();
-              },
-            ),*/
-            IconButton(
-              icon: const Icon(Icons.add_circle),
+              icon: const Icon(Icons.volume_up),
               tooltip: '+',
-              onPressed: () {},
+              onPressed: () {
+                audioPlayer.volumeUp();
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.volume_down),
+              tooltip: '-',
+              onPressed: () {
+                audioPlayer.volumeDown();
+              },
             ),
           ],
         ),
@@ -134,28 +68,5 @@ class MyAudioPlayer {
     return _singleton;
   }
 
-  late AudioPlayer _audioPlayer;
-  MyAudioPlayer._internal() {
-    _audioPlayer = AudioPlayer();
-  }
-
-  void play(Source src) {
-    _audioPlayer.play(src);
-  }
-
-  void pause() {
-    _audioPlayer.pause();
-  }
-
-  void stop() {
-    _audioPlayer.stop();
-  }
-
-  void release(String url) {
-    _audioPlayer.release();
-  }
-
-  void dispose() {
-    _audioPlayer.dispose();
-  }
+  MyAudioPlayer._internal();
 }
