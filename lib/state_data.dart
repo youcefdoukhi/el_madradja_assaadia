@@ -74,10 +74,46 @@ final savedBookmarkFromSharedPref = FutureProvider<int>((ref) async {
 });
 */
 
-class AudioPlayerController {
-  AudioPlayer audioPlayer = AudioPlayer();
+class AudioPlayerController extends ChangeNotifier {
+  late AudioPlayer audioPlayer;
+  late Duration duration;
+  late Duration position;
+  PlayerState playerState = PlayerState.stopped;
+
   double volume = 1.0;
   bool fileRead = false;
+
+  AudioPlayerController() {
+    //AudioLogger.logLevel = AudioLogLevel.none;
+    audioPlayer = AudioPlayer();
+    audioPlayer.setReleaseMode(ReleaseMode.stop);
+
+    position = const Duration(
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      milliseconds: 0,
+    );
+    duration = const Duration(
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      milliseconds: 0,
+    );
+    audioPlayer.onDurationChanged.listen((Duration d) {
+      duration = d;
+      notifyListeners();
+    });
+
+    audioPlayer.onPositionChanged.listen((Duration p) {
+      position = p;
+      notifyListeners();
+    });
+
+    audioPlayer.onPlayerStateChanged.listen((PlayerState s) {
+      playerState = s;
+    });
+  }
 
   Future<void> setSource(String filePath) async {
     String path = (await getApplicationDocumentsDirectory()).absolute.path;
@@ -85,7 +121,6 @@ class AudioPlayerController {
     File file = File("$path$filePath");
     if (file.existsSync()) {
       audioPlayer.setSourceDeviceFile(file.path);
-
       fileRead = true;
     } else {
       fileRead = false;
@@ -94,38 +129,36 @@ class AudioPlayerController {
 
   Future<void> play() async {
     (fileRead) ? await audioPlayer.resume() : null;
+    notifyListeners();
   }
 
   Future<void> pause() async {
     await audioPlayer.pause();
+    notifyListeners();
   }
 
   Future<void> stop() async {
     await audioPlayer.stop();
+    notifyListeners();
   }
 
   Future<void> release() async {
     await audioPlayer.release();
+    notifyListeners();
   }
 
-  Future<void> dispose() async {
-    await audioPlayer.dispose();
-  }
-
-  Future<void> seek(int h, int m, int s) async {
+  Future<void> seek(Duration d) async {
     await audioPlayer.seek(
-      Duration(
-        hours: h,
-        minutes: m,
-        seconds: s,
-      ),
+      d,
     );
+    notifyListeners();
   }
 
   Future<void> volumeUp() async {
     if (volume < 1.0) {
       volume = volume + 0.1;
       await audioPlayer.setVolume(volume);
+      notifyListeners();
     }
   }
 
@@ -133,11 +166,12 @@ class AudioPlayerController {
     if (volume > 0.0) {
       volume = volume - 0.1;
       await audioPlayer.setVolume(volume);
+      notifyListeners();
     }
   }
 }
 
-final playerProvider = StateProvider<AudioPlayerController>(
+final playerProvider = ChangeNotifierProvider<AudioPlayerController>(
   (ref) {
     return AudioPlayerController();
   },

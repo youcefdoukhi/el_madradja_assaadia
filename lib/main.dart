@@ -1,3 +1,4 @@
+import 'package:el_madradja_assaadia/player.dart';
 import 'package:el_madradja_assaadia/state_data.dart';
 import 'package:el_madradja_assaadia/audioplayers.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,6 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
-import 'about2.dart';
 import 'download_page.dart';
 
 Future<void> main() async {
@@ -196,8 +196,7 @@ class MainWidget extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                     //builder: (context) => const About()),
-                                    builder: (context) =>
-                                        const AudioPlayerExample()),
+                                    builder: (context) => const AudioPlayer()),
                               ),
                             },
                           ),
@@ -257,7 +256,10 @@ class MainWidget extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const About2()),
+                                  //builder: (context) => const About2(),
+                                  builder: (context) =>
+                                      const AudioPlayerExemple2(),
+                                ),
                               ),
                             },
                           ),
