@@ -1,4 +1,3 @@
-import 'package:el_madradja_assaadia/player.dart';
 import 'package:el_madradja_assaadia/state_data.dart';
 import 'package:el_madradja_assaadia/audioplayers.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +51,7 @@ class MyApp extends StatelessWidget {
                 child: Container(
                   height: double.infinity,
                   width: double.infinity,
-                  padding: const EdgeInsets.only(top: 100),
+                  padding: const EdgeInsets.only(top: 110),
                   decoration: BoxDecoration(
                     color: const Color.fromARGB(255, 251, 251, 251),
                     image: DecorationImage(
@@ -85,7 +84,7 @@ class MainWidget extends StatelessWidget {
         child: Container(
           height: double.infinity,
           width: double.infinity,
-          padding: const EdgeInsets.only(top: 100),
+          //padding: const EdgeInsets.only(top: 110),
           decoration: BoxDecoration(
             color: const Color.fromARGB(255, 251, 251, 251),
             image: DecorationImage(
@@ -105,8 +104,8 @@ class MainWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      height: MediaQuery.of(context).size.width / 3,
-                      width: MediaQuery.of(context).size.width / 3,
+                      height: MediaQuery.of(context).size.width / 3.5,
+                      width: MediaQuery.of(context).size.width / 3.5,
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           fit: BoxFit.fill,
@@ -121,18 +120,13 @@ class MainWidget extends StatelessWidget {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Icon(
-                                  Icons.download,
-                                  color: Color(0xFFD4B37C),
-                                  //color: Colors.white,
-                                ),
                                 Text(
-                                  "تصفح",
+                                  "منهج\nالسالكين",
                                   textDirection: TextDirection.rtl,
-                                  textAlign: TextAlign.justify,
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 13,
+                                    fontSize: 11,
                                   ),
                                 ),
                               ],
@@ -157,8 +151,254 @@ class MainWidget extends StatelessWidget {
                       thickness: 0.5,
                     ),
                     Container(
-                      height: MediaQuery.of(context).size.width / 3,
-                      width: MediaQuery.of(context).size.width / 3,
+                      height: MediaQuery.of(context).size.width / 3.5,
+                      width: MediaQuery.of(context).size.width / 3.5,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.fill,
+                          image: Image.asset(
+                            'images/btn.png',
+                          ).image,
+                        ),
+                      ),
+                      child: Stack(
+                        children: [
+                          const Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  "منظومة\nالقواعد\nالفقهية",
+                                  textDirection: TextDirection.rtl,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 11,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () => {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MyDownloadPage(
+                                    platform: platform,
+                                  ),
+                                ),
+                              ),
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              IntrinsicHeight(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.width / 3.5,
+                      width: MediaQuery.of(context).size.width / 3.5,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.fill,
+                          image: Image.asset(
+                            'images/btn.png',
+                          ).image,
+                        ),
+                      ),
+                      child: Stack(
+                        children: [
+                          const Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  "رسالة\nفي أصول\nالفقه",
+                                  textDirection: TextDirection.rtl,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 11,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () => {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MyDownloadPage(
+                                    platform: platform,
+                                  ),
+                                ),
+                              ),
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    const VerticalDivider(
+                      thickness: 0.5,
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.width / 3.5,
+                      width: MediaQuery.of(context).size.width / 3.5,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.fill,
+                          image: Image.asset(
+                            'images/btn.png',
+                          ).image,
+                        ),
+                      ),
+                      child: Stack(
+                        children: [
+                          const Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  "الإرشاد\nإلى معرفة\nالأحكام",
+                                  textDirection: TextDirection.rtl,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 11,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () => {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MyDownloadPage(
+                                    platform: platform,
+                                  ),
+                                ),
+                              ),
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    const VerticalDivider(
+                      thickness: 0.5,
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.width / 3.5,
+                      width: MediaQuery.of(context).size.width / 3.5,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.fill,
+                          image: Image.asset(
+                            'images/btn.png',
+                          ).image,
+                        ),
+                      ),
+                      child: Stack(
+                        children: [
+                          const Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  "القواعد\nوالأصول\nالجامعة",
+                                  textDirection: TextDirection.rtl,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 11,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () => {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MyDownloadPage(
+                                    platform: platform,
+                                  ),
+                                ),
+                              ),
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              /* IntrinsicHeight(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.width / 3.5,
+                      width: MediaQuery.of(context).size.width / 3.5,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.fill,
+                          image: Image.asset(
+                            'images/btn.png',
+                          ).image,
+                        ),
+                      ),
+                      child: Stack(
+                        children: [
+                          const Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  "منهج السالكين",
+                                  textDirection: TextDirection.rtl,
+                                  textAlign: TextAlign.justify,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 13.5,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () => {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MyDownloadPage(
+                                    platform: platform,
+                                  ),
+                                ),
+                              ),
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    const VerticalDivider(
+                      thickness: 0.5,
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.width / 3.5,
+                      width: MediaQuery.of(context).size.width / 3.5,
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           fit: BoxFit.fill,
@@ -176,7 +416,7 @@ class MainWidget extends StatelessWidget {
                                 Icon(
                                   Icons.info_outline,
                                   //color: Colors.white,
-                                  color: Color(0xFFD4B37C),
+                                  color: Color(0xFFD4B3.57C),
                                 ),
                                 Text(
                                   "عن التطبيق",
@@ -184,7 +424,7 @@ class MainWidget extends StatelessWidget {
                                   textAlign: TextAlign.justify,
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 13,
+                                    fontSize: 13.5,
                                   ),
                                 ),
                               ],
@@ -218,8 +458,8 @@ class MainWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      height: MediaQuery.of(context).size.width / 3,
-                      width: MediaQuery.of(context).size.width / 3,
+                      height: MediaQuery.of(context).size.width / 3.5,
+                      width: MediaQuery.of(context).size.width / 3.5,
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           fit: BoxFit.fill,
@@ -237,7 +477,7 @@ class MainWidget extends StatelessWidget {
                                 Icon(
                                   Icons.info_outline,
                                   //color: Colors.white,
-                                  color: Color(0xFFD4B37C),
+                                  color: Color(0xFFD4B3.57C),
                                 ),
                                 Text(
                                   "2 عن التطبيق",
@@ -245,7 +485,7 @@ class MainWidget extends StatelessWidget {
                                   textAlign: TextAlign.justify,
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 13,
+                                    fontSize: 13.5,
                                   ),
                                 ),
                               ],
@@ -268,7 +508,7 @@ class MainWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
+              ),*/
             ],
           ),
         ),
