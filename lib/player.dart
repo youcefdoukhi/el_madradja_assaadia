@@ -25,7 +25,7 @@ class AudioPlayerState extends ConsumerState<AudioPlayerExemple2> {
 
   @override
   Widget build(BuildContext context) {
-    audioPlayer.setSource("/MP3/01_02.mp3");
+    //audioPlayer.setSource("/MP3/01_02.mp3");
 
     return Scaffold(
       appBar: AppBar(

@@ -74,6 +74,19 @@ final savedBookmarkFromSharedPref = FutureProvider<int>((ref) async {
 });
 */
 
+final filePathProvider = StateProvider<String>(
+  (ref) {
+    return "/MP3/01_01.mp3";
+  },
+);
+
+final playerProvider = ChangeNotifierProvider<AudioPlayerController>(
+  (ref) {
+    //final filePath = ref.watch(filePathProvider);
+    return AudioPlayerController(/*filePath*/);
+  },
+);
+
 class AudioPlayerController extends ChangeNotifier {
   late AudioPlayer audioPlayer;
   late Duration duration;
@@ -85,6 +98,7 @@ class AudioPlayerController extends ChangeNotifier {
 
   AudioPlayerController() {
     //AudioLogger.logLevel = AudioLogLevel.none;
+
     audioPlayer = AudioPlayer();
     audioPlayer.setReleaseMode(ReleaseMode.stop);
 
@@ -92,13 +106,11 @@ class AudioPlayerController extends ChangeNotifier {
       hours: 0,
       minutes: 0,
       seconds: 0,
-      milliseconds: 0,
     );
     duration = const Duration(
       hours: 0,
       minutes: 0,
       seconds: 0,
-      milliseconds: 0,
     );
     audioPlayer.onDurationChanged.listen((Duration d) {
       duration = d;
@@ -112,6 +124,7 @@ class AudioPlayerController extends ChangeNotifier {
 
     audioPlayer.onPlayerStateChanged.listen((PlayerState s) {
       playerState = s;
+      notifyListeners();
     });
   }
 
@@ -129,36 +142,30 @@ class AudioPlayerController extends ChangeNotifier {
 
   Future<void> play() async {
     (fileRead) ? await audioPlayer.resume() : null;
-    notifyListeners();
   }
 
   Future<void> pause() async {
     await audioPlayer.pause();
-    notifyListeners();
   }
 
   Future<void> stop() async {
     await audioPlayer.stop();
-    notifyListeners();
   }
 
   Future<void> release() async {
     await audioPlayer.release();
-    notifyListeners();
   }
 
   Future<void> seek(Duration d) async {
     await audioPlayer.seek(
       d,
     );
-    notifyListeners();
   }
 
   Future<void> volumeUp() async {
     if (volume < 1.0) {
       volume = volume + 0.1;
       await audioPlayer.setVolume(volume);
-      notifyListeners();
     }
   }
 
@@ -166,13 +173,6 @@ class AudioPlayerController extends ChangeNotifier {
     if (volume > 0.0) {
       volume = volume - 0.1;
       await audioPlayer.setVolume(volume);
-      notifyListeners();
     }
   }
 }
-
-final playerProvider = ChangeNotifierProvider<AudioPlayerController>(
-  (ref) {
-    return AudioPlayerController();
-  },
-);

@@ -10,7 +10,6 @@ class AudioPlayer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final audioPlayer = ref.watch(playerProvider);
-    audioPlayer.setSource("/MP3/01_01.mp3");
 
     return Scaffold(
       body: Column(
@@ -97,6 +96,20 @@ class AudioPlayer extends ConsumerWidget {
                 ),
               ],
             ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.square_foot),
+            tooltip: '',
+            onPressed: () async {
+              await ref.read(playerProvider).setSource("/MP3/01_01.mp3");
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.change_circle),
+            tooltip: '',
+            onPressed: () async {
+              await ref.read(playerProvider).setSource("/MP3/01_02.mp3");
+            },
           ),
         ],
       ),
