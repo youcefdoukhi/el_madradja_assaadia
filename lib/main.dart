@@ -1,5 +1,5 @@
+import 'package:el_madradja_assaadia/reader.dart';
 import 'package:el_madradja_assaadia/state_data.dart';
-import 'package:el_madradja_assaadia/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -41,9 +41,9 @@ class MyApp extends StatelessWidget {
       title: _title,
       home: Consumer(
         builder: (context, ref, child) {
-          final dataKitab01 = ref.watch(dataProvider);
-          return dataKitab01.when(
-            data: (objets4) {
+          final listSurah = ref.watch(myDarssListProvider);
+          return listSurah.when(
+            data: (objets2) {
               return const MainWidget();
             },
             loading: () => Scaffold(
@@ -73,11 +73,11 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MainWidget extends StatelessWidget {
+class MainWidget extends ConsumerWidget {
   const MainWidget({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final platform = Theme.of(context).platform;
     return Scaffold(
       body: SafeArea(
@@ -134,12 +134,11 @@ class MainWidget extends StatelessWidget {
                           ),
                           InkWell(
                             onTap: () => {
+                              ref.read(kitabNumProvider.notifier).state = 1,
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => MyDownloadPage(
-                                    platform: platform,
-                                  ),
+                                  builder: (context) => const ReaderWidget(),
                                 ),
                               ),
                             },
@@ -181,12 +180,11 @@ class MainWidget extends StatelessWidget {
                           ),
                           InkWell(
                             onTap: () => {
+                              ref.read(kitabNumProvider.notifier).state = 2,
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => MyDownloadPage(
-                                    platform: platform,
-                                  ),
+                                  builder: (context) => const ReaderWidget(),
                                 ),
                               ),
                             },
@@ -197,6 +195,12 @@ class MainWidget extends StatelessWidget {
                   ],
                 ),
               ),
+              /*const FractionallySizedBox(
+                widthFactor: 0.8,
+                child: Divider(
+                  thickness: 0.5,
+                ),
+              ),*/
               IntrinsicHeight(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -233,12 +237,11 @@ class MainWidget extends StatelessWidget {
                           ),
                           InkWell(
                             onTap: () => {
+                              ref.read(kitabNumProvider.notifier).state = 3,
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => MyDownloadPage(
-                                    platform: platform,
-                                  ),
+                                  builder: (context) => const ReaderWidget(),
                                 ),
                               ),
                             },
@@ -280,12 +283,11 @@ class MainWidget extends StatelessWidget {
                           ),
                           InkWell(
                             onTap: () => {
+                              ref.read(kitabNumProvider.notifier).state = 4,
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => MyDownloadPage(
-                                    platform: platform,
-                                  ),
+                                  builder: (context) => const ReaderWidget(),
                                 ),
                               ),
                             },
@@ -327,12 +329,11 @@ class MainWidget extends StatelessWidget {
                           ),
                           InkWell(
                             onTap: () => {
+                              ref.read(kitabNumProvider.notifier).state = 5,
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => MyDownloadPage(
-                                    platform: platform,
-                                  ),
+                                  builder: (context) => const ReaderWidget(),
                                 ),
                               ),
                             },
@@ -343,172 +344,6 @@ class MainWidget extends StatelessWidget {
                   ],
                 ),
               ),
-
-              /* IntrinsicHeight(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: MediaQuery.of(context).size.width / 3.5,
-                      width: MediaQuery.of(context).size.width / 3.5,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: Image.asset(
-                            'images/btn.png',
-                          ).image,
-                        ),
-                      ),
-                      child: Stack(
-                        children: [
-                          const Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  "منهج السالكين",
-                                  textDirection: TextDirection.rtl,
-                                  textAlign: TextAlign.justify,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 13.5,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () => {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MyDownloadPage(
-                                    platform: platform,
-                                  ),
-                                ),
-                              ),
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    const VerticalDivider(
-                      thickness: 0.5,
-                    ),
-                    Container(
-                      height: MediaQuery.of(context).size.width / 3.5,
-                      width: MediaQuery.of(context).size.width / 3.5,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: Image.asset(
-                            'images/btn.png',
-                          ).image,
-                        ),
-                      ),
-                      child: Stack(
-                        children: [
-                          const Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.info_outline,
-                                  //color: Colors.white,
-                                  color: Color(0xFFD4B3.57C),
-                                ),
-                                Text(
-                                  "عن التطبيق",
-                                  textDirection: TextDirection.rtl,
-                                  textAlign: TextAlign.justify,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 13.5,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () => {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    //builder: (context) => const About()),
-                                    builder: (context) => const AudioPlayer()),
-                              ),
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const FractionallySizedBox(
-                widthFactor: 0.8,
-                child: Divider(
-                  thickness: 0.5,
-                ),
-              ),
-              IntrinsicHeight(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: MediaQuery.of(context).size.width / 3.5,
-                      width: MediaQuery.of(context).size.width / 3.5,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: Image.asset(
-                            'images/btn.png',
-                          ).image,
-                        ),
-                      ),
-                      child: Stack(
-                        children: [
-                          const Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.info_outline,
-                                  //color: Colors.white,
-                                  color: Color(0xFFD4B3.57C),
-                                ),
-                                Text(
-                                  "2 عن التطبيق",
-                                  textDirection: TextDirection.rtl,
-                                  textAlign: TextAlign.justify,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 13.5,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () => {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  //builder: (context) => const About2(),
-                                  builder: (context) =>
-                                      const AudioPlayerExemple2(),
-                                ),
-                              ),
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),*/
             ],
           ),
         ),

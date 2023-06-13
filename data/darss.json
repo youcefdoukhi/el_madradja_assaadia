@@ -1,0 +1,81 @@
+[
+   {
+      "index":1,
+      "name":"الفاتحة",
+      "page":1,
+      "kitab": 1
+   },
+   {
+      "index":2,
+      "name":"البقرة",
+      "page":2,
+      "kitab": 1
+   },
+   {
+      "index":3,
+      "name":"آل عمران",
+      "page":3,
+      "kitab": 1
+   },
+   {
+      "index":4,
+      "name":"النساء",
+      "page":4,
+      "kitab": 1
+   },
+   {
+      "index":5,
+      "name":"المائدة",
+      "page":5,
+      "kitab": 1
+   },
+   {
+      "index":6,
+      "name":"الأنعام",
+      "page":6,
+      "kitab": 1
+   },
+   {
+      "index":7,
+      "name":"الأعراف",
+      "page":7,
+      "kitab": 1
+   },
+   {
+      "index":8,
+      "name":"الأنفال",
+      "page":8,
+      "kitab": 1
+   },
+   {
+      "index":9,
+      "name":"التوبة",
+      "page":9,
+      "kitab": 1
+   },
+   {
+      "index":10,
+      "name":"يونس",
+      "page":10,
+      "kitab": 1
+   },
+   {
+      "index":11,
+      "name":"هود",
+      "page":11,
+      "kitab": 1
+   },
+   {
+      "index":12,
+      "name":"يوسف",
+      "page":12,
+      "kitab": 2
+   },
+   {
+      "index":13,
+      "name":"الرعد",
+      "page":13,
+      "kitab": 2
+   }
+   
+]
