@@ -203,8 +203,9 @@ final showPageInfoProvider = StateProvider<bool>(
 );
 
 final pageIndexFromSharedPref = FutureProvider<int>((ref) async {
+  final kitabNum = ref.watch(kitabNumProvider);
   final prefs = await SharedPreferences.getInstance();
-  int? currentPage = prefs.getInt('mushaf01_page');
+  int? currentPage = prefs.getInt('kitab_${kitabNum}_page');
   if (currentPage != null) {
     return currentPage;
   } else {
@@ -273,3 +274,27 @@ final myDarssListProvider = FutureProvider<List<MyDarss>>((ref) async {
       List<MyDarss>.from(jsonData.map((json) => MyDarss.fromJson(json)));
   return objets;
 });
+
+final fontSizeProvider = StateProvider<double>(
+  (ref) {
+    return 15;
+  },
+);
+
+final marksProvider = StateProvider<List<String>>(
+  (ref) {
+    return [];
+  },
+);
+
+final marksInfoProvider = StateProvider<String>(
+  (ref) {
+    return "------";
+  },
+);
+
+final fontFamilyProvider = StateProvider<String>(
+  (ref) {
+    return "";
+  },
+);

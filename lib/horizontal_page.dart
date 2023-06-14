@@ -25,7 +25,8 @@ class HorizontalPage extends ConsumerWidget {
 
     Future<void> saveCurrentPage() async {
       final prefs = await SharedPreferences.getInstance();
-      prefs.setInt('mushaf01_page', ref.read(pageIndexProvider));
+      prefs.setInt('kitab_${ref.read(kitabNumProvider)}_page',
+          ref.read(pageIndexProvider));
     }
 
     return Consumer(

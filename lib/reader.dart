@@ -26,7 +26,7 @@ class ReaderWidget extends ConsumerWidget {
                 },
                 child: const HorizontalPage(),
               ),
-              const MyPageInfo(),
+              MyPageInfo(),
             ],
           ),
         ),
