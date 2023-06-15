@@ -159,8 +159,18 @@ class AudioPlayerController extends ChangeNotifier {
     }
   }
 
-  Future<void> play() async {
+  Future<void> play(/* String filePath */) async {
+    /*  String path = (await getApplicationDocumentsDirectory()).absolute.path;
+
+    File file = File("$path$filePath");
+    if (file.existsSync()) {
+      audioPlayer.setSourceDeviceFile(file.path);
+      fileRead = true;
+    } else {
+      fileRead = false;
+    }*/
     (fileRead) ? await audioPlayer.resume() : null;
+    // (fileRead) ? await audioPlayer.play(DeviceFileSource(file.path)) : null;
   }
 
   Future<void> pause() async {
@@ -202,7 +212,7 @@ final showPageInfoProvider = StateProvider<bool>(
   },
 );
 
-final pageIndexFromSharedPref = FutureProvider<int>((ref) async {
+final darsIndexFromSharedPref = FutureProvider<int>((ref) async {
   final kitabNum = ref.watch(kitabNumProvider);
   final prefs = await SharedPreferences.getInstance();
   int? currentPage = prefs.getInt('kitab_${kitabNum}_page');
@@ -213,9 +223,9 @@ final pageIndexFromSharedPref = FutureProvider<int>((ref) async {
   }
 });
 
-final pageIndexProvider = StateProvider<int>(
+final darsIndexProvider = StateProvider<int>(
   (ref) {
-    final futureValue = ref.watch(pageIndexFromSharedPref);
+    final futureValue = ref.watch(darsIndexFromSharedPref);
     return futureValue.asData?.value ?? 0;
   },
 );
@@ -296,5 +306,27 @@ final marksInfoProvider = StateProvider<String>(
 final fontFamilyProvider = StateProvider<String>(
   (ref) {
     return "";
+  },
+);
+
+final darsAudioPathProvider = StateProvider<String>(
+  (ref) {
+    final kitabNum = ref.watch(kitabNumProvider);
+    final darsNum = ref.watch(darsIndexProvider);
+    // print("\n KITAB : $kitabNum");
+    // print("\n DARS : $darsNum");
+    String filePath = "/MP3/";
+    if (kitabNum < 10) {
+      filePath = "${filePath}0${kitabNum}_";
+    } else {
+      filePath = "$filePath${kitabNum}_";
+    }
+
+    if (darsNum < 10) {
+      filePath = "${filePath}0${darsNum + 1}.mp3";
+    } else {
+      filePath = "$filePath${darsNum + 1}.mp3";
+    }
+    return filePath;
   },
 );

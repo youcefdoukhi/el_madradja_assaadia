@@ -178,28 +178,30 @@ class MainWidget extends ConsumerWidget {
                       ),
                       InkWell(
                         onTap: () => {
+                          ref.read(showPageInfoProvider.notifier).state = false,
                           ref.read(kitabNumProvider.notifier).state = 1,
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => 
-                              Consumer(
-      builder: (context, ref, child) {
-        final indexFromSP = ref.watch(pageIndexFromSharedPref);
-        return indexFromSP.when(
-          data: (data) {
-            
-            return const ReaderWidget();},
-
-                              
-                              
-                            
-                            loading: () => const Center(
-                                child: CircularProgressIndicator()),
-                            error: (error, _) => Text('Error: $error'),
-                          );
+                              builder: (context) => Consumer(
+                                builder: (context, ref, child) {
+                                  final indexFromSP =
+                                      ref.watch(darsIndexFromSharedPref);
+                                  return indexFromSP.when(
+                                    data: (data) {
+                                      return const ReaderWidget();
+                                    },
+                                    loading: () => const Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                    error: (error, _) => Text('Error: $error'),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
                         },
-                      ),)}
+                      ),
                     ],
                   ),
                 ),
@@ -237,11 +239,26 @@ class MainWidget extends ConsumerWidget {
                       ),
                       InkWell(
                         onTap: () => {
+                          ref.read(showPageInfoProvider.notifier).state = false,
                           ref.read(kitabNumProvider.notifier).state = 2,
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ReaderWidget(),
+                              builder: (context) => Consumer(
+                                builder: (context, ref, child) {
+                                  final indexFromSP =
+                                      ref.watch(darsIndexFromSharedPref);
+                                  return indexFromSP.when(
+                                    data: (data) {
+                                      return const ReaderWidget();
+                                    },
+                                    loading: () => const Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                    error: (error, _) => Text('Error: $error'),
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         },
@@ -252,12 +269,6 @@ class MainWidget extends ConsumerWidget {
               ],
             ),
           ),
-          /*const FractionallySizedBox(
-                widthFactor: 0.8,
-                child: Divider(
-                  thickness: 0.5,
-                ),
-              ),*/
           IntrinsicHeight(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -294,11 +305,26 @@ class MainWidget extends ConsumerWidget {
                       ),
                       InkWell(
                         onTap: () => {
+                          ref.read(showPageInfoProvider.notifier).state = false,
                           ref.read(kitabNumProvider.notifier).state = 3,
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ReaderWidget(),
+                              builder: (context) => Consumer(
+                                builder: (context, ref, child) {
+                                  final indexFromSP =
+                                      ref.watch(darsIndexFromSharedPref);
+                                  return indexFromSP.when(
+                                    data: (data) {
+                                      return const ReaderWidget();
+                                    },
+                                    loading: () => const Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                    error: (error, _) => Text('Error: $error'),
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         },
@@ -340,11 +366,26 @@ class MainWidget extends ConsumerWidget {
                       ),
                       InkWell(
                         onTap: () => {
+                          ref.read(showPageInfoProvider.notifier).state = false,
                           ref.read(kitabNumProvider.notifier).state = 4,
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ReaderWidget(),
+                              builder: (context) => Consumer(
+                                builder: (context, ref, child) {
+                                  final indexFromSP =
+                                      ref.watch(darsIndexFromSharedPref);
+                                  return indexFromSP.when(
+                                    data: (data) {
+                                      return const ReaderWidget();
+                                    },
+                                    loading: () => const Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                    error: (error, _) => Text('Error: $error'),
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         },
@@ -386,11 +427,26 @@ class MainWidget extends ConsumerWidget {
                       ),
                       InkWell(
                         onTap: () => {
+                          ref.read(showPageInfoProvider.notifier).state = false,
                           ref.read(kitabNumProvider.notifier).state = 5,
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ReaderWidget(),
+                              builder: (context) => Consumer(
+                                builder: (context, ref, child) {
+                                  final indexFromSP =
+                                      ref.watch(darsIndexFromSharedPref);
+                                  return indexFromSP.when(
+                                    data: (data) {
+                                      return const ReaderWidget();
+                                    },
+                                    loading: () => const Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                    error: (error, _) => Text('Error: $error'),
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         },

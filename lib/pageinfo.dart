@@ -59,9 +59,9 @@ class MyPageInfo extends ConsumerWidget {
 
   Future<void> _saveBookmark(ref) async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setInt('mushaf01_bookmark', ref.read(pageIndexProvider));
+    prefs.setInt('mushaf01_bookmark', ref.read(darsIndexProvider));
     ref.read(savedBookmarkProvider.notifier).state =
-        ref.read(pageIndexProvider);
+        ref.read(darsIndexProvider);
     ref.read(showPageInfoProvider.notifier).state = false;
   }
 
@@ -121,7 +121,7 @@ class MyPageInfo extends ConsumerWidget {
     ref.read(marksProvider.notifier).state =
         (prefs.getStringList('marks') ?? []);
     ref.read(marksProvider.notifier).state.add(
-        "${ref.read(pageIndexProvider)}/${getDate(DateTime.now())}/$marqueInfo");
+        "${ref.read(darsIndexProvider)}/${getDate(DateTime.now())}/$marqueInfo");
     prefs.setStringList('marks', ref.read(marksProvider));
     ref.read(marksInfoProvider.notifier).state = "------";
   }
@@ -222,508 +222,489 @@ class MyPageInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    int page = ref.watch(pageIndexProvider);
+    int page = ref.watch(darsIndexProvider);
 
-    return Stack(
-      children: <Widget>[
-        Visibility(
-            visible: ref.watch(showPageInfoProvider),
-            child: Column(
-              children: <Widget>[
-                Stack(
+    return Visibility(
+      visible: ref.watch(showPageInfoProvider),
+      child: Column(
+        children: <Widget>[
+          Stack(
+            children: [
+              Container(
+                margin: const EdgeInsets.all(10),
+                padding: const EdgeInsets.only(left: 10, right: 10),
+                height: 44,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(220, 54, 56, 89),
+                  border: Border.all(
+                    color: const Color.fromARGB(255, 212, 180, 124),
+                    width: 0.5,
+                  ),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Row(
                   children: [
-                    Container(
-                      margin: const EdgeInsets.all(10),
-                      padding: const EdgeInsets.only(left: 10, right: 10),
-                      height: 44,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(220, 54, 56, 89),
-                        border: Border.all(
-                          color: const Color.fromARGB(255, 212, 180, 124),
-                          width: 0.5,
+                    const Expanded(
+                      flex: 4,
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          "الجزء 10",
+                          textDirection: TextDirection.rtl,
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: fontTitre,
+                          ),
                         ),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Row(
-                        children: [
-                          const Expanded(
-                            flex: 4,
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: Text(
-                                "الجزء 10",
-                                textDirection: TextDirection.rtl,
-                                textAlign: TextAlign.justify,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: fontTitre,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: Center(
-                              child: Text(
-                                "${page + 1}",
-                                textDirection: TextDirection.rtl,
-                                textAlign: TextAlign.justify,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: fontTitre,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const Expanded(
-                            flex: 4,
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "Surah",
-                                textDirection: TextDirection.rtl,
-                                textAlign: TextAlign.justify,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: fontTitre,
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(
-                        left: 12,
-                        right: 12,
-                      ),
-                      child: FutureBuilder<double>(
-                        future: ScreenBrightness().current,
-                        builder: (context, snapshot) {
-                          double currentBrightness = 0;
-                          if (snapshot.hasData) {
-                            currentBrightness = snapshot.data!;
-                          }
-
-                          return StreamBuilder<double>(
-                            stream:
-                                ScreenBrightness().onCurrentBrightnessChanged,
-                            builder: (context, snapshot) {
-                              double changedBrightness = currentBrightness;
-                              if (snapshot.hasData) {
-                                changedBrightness = snapshot.data!;
-                              }
-
-                              return SliderTheme(
-                                data: SliderTheme.of(context).copyWith(
-                                  trackHeight: 40.0,
-                                  trackShape: CustomTrackShape(),
-                                  activeTrackColor:
-                                      const Color.fromARGB(179, 54, 56, 89),
-                                  inactiveTrackColor: Colors.transparent,
-                                  thumbShape: const RoundSliderThumbShape(
-                                    enabledThumbRadius: 0.0,
-                                    pressedElevation: 0.0,
-                                  ),
-                                  thumbColor: Colors.transparent,
-                                  overlayColor: Colors.transparent,
-                                  overlayShape: const RoundSliderOverlayShape(
-                                      overlayRadius: 32.0),
-                                ),
-                                child: Slider.adaptive(
-                                  value: changedBrightness,
-                                  onChanged: (value) {
-                                    setBrightness(value);
-                                  },
-                                ),
-                              );
-                            },
-                          );
-                        },
+                    Expanded(
+                      flex: 2,
+                      child: Center(
+                        child: Text(
+                          "${page + 1}",
+                          textDirection: TextDirection.rtl,
+                          textAlign: TextAlign.justify,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontFamily: fontTitre,
+                          ),
+                        ),
                       ),
                     ),
+                    const Expanded(
+                      flex: 4,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Surah",
+                          textDirection: TextDirection.rtl,
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: fontTitre,
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
-                Container(
-                  margin: const EdgeInsets.only(
-                    top: 0,
-                    left: 10,
-                    right: 10,
-                    bottom: 10,
-                  ),
-                  //padding: const EdgeInsets.only(left: 10, right: 10),
-                  //height: 44,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(220, 54, 56, 89),
-                    border: Border.all(
-                      color: const Color.fromARGB(255, 212, 180, 124),
-                      width: 0.5,
-                    ),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: const MyAudioPlayer(),
+              ),
+              Container(
+                margin: const EdgeInsets.only(
+                  left: 12,
+                  right: 12,
                 ),
-                Expanded(
-                  child: Container(),
-                ),
+                child: FutureBuilder<double>(
+                  future: ScreenBrightness().current,
+                  builder: (context, snapshot) {
+                    double currentBrightness = 0;
+                    if (snapshot.hasData) {
+                      currentBrightness = snapshot.data!;
+                    }
 
-                //------------------
-                Container(
-                  height: 140,
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(220, 54, 56, 89),
+                    return StreamBuilder<double>(
+                      stream: ScreenBrightness().onCurrentBrightnessChanged,
+                      builder: (context, snapshot) {
+                        double changedBrightness = currentBrightness;
+                        if (snapshot.hasData) {
+                          changedBrightness = snapshot.data!;
+                        }
+
+                        return SliderTheme(
+                          data: SliderTheme.of(context).copyWith(
+                            trackHeight: 40.0,
+                            trackShape: CustomTrackShape(),
+                            activeTrackColor:
+                                const Color.fromARGB(179, 54, 56, 89),
+                            inactiveTrackColor: Colors.transparent,
+                            thumbShape: const RoundSliderThumbShape(
+                              enabledThumbRadius: 0.0,
+                              pressedElevation: 0.0,
+                            ),
+                            thumbColor: Colors.transparent,
+                            overlayColor: Colors.transparent,
+                            overlayShape: const RoundSliderOverlayShape(
+                                overlayRadius: 32.0),
+                          ),
+                          child: Slider.adaptive(
+                            value: changedBrightness,
+                            onChanged: (value) {
+                              setBrightness(value);
+                            },
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+
+          Container(
+            margin: const EdgeInsets.only(
+              top: 0,
+              left: 10,
+              right: 10,
+              bottom: 10,
+            ),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(220, 54, 56, 89),
+              border: Border.all(
+                color: const Color.fromARGB(255, 212, 180, 124),
+                width: 0.5,
+              ),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: const MyAudioPlayer(),
+            /*   MyAudioPlayer2(
+                    kitab: ref.read(kitabNumProvider),
+                    dars: ref.read(darsIndexProvider),
+                  ),*/
+          ),
+          Expanded(
+            child: Container(),
+          ),
+
+          //------------------
+          Container(
+            height: 140,
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              color: Color.fromARGB(220, 54, 56, 89),
+            ),
+            child: Column(
+              children: [
+                Flexible(
+                  child: FractionallySizedBox(
+                    widthFactor: 1,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Flexible(
+                          child: FractionallySizedBox(
+                            widthFactor: 1,
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(
+                                      width: 0.5, color: Color(0xFFFFFFFF)),
+                                ),
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const MainWidget()),
+                                  );
+                                }, // button pressed
+                                child: const Column(
+                                  //mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(
+                                      //size: 20,
+                                      Icons.home_outlined,
+                                      color: Color.fromARGB(255, 212, 180, 124),
+                                    ), // icon
+                                    Text(" الواجهة الرئيسية",
+                                        textDirection: TextDirection.rtl,
+                                        textAlign: TextAlign.justify,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: fontTitre,
+                                        )),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Flexible(
+                          child: FractionallySizedBox(
+                            widthFactor: 1,
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(
+                                      width: 0.5,
+                                      color:
+                                          Color.fromARGB(255, 212, 180, 124)),
+                                  left: BorderSide(
+                                      width: 0.5,
+                                      color:
+                                          Color.fromARGB(255, 212, 180, 124)),
+                                  right: BorderSide(
+                                      width: 0.5,
+                                      color:
+                                          Color.fromARGB(255, 212, 180, 124)),
+                                ),
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  displayTextInputDialog(context, ref);
+                                },
+                                child: const Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.bookmark_add_outlined,
+                                      color: Color.fromARGB(255, 212, 180, 124),
+                                    ), // icon
+                                    Text(
+                                      "إضافة علامة",
+                                      textDirection: TextDirection.rtl,
+                                      textAlign: TextAlign.justify,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: fontTitre,
+                                      ),
+                                    ), // text
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Flexible(
+                          child: FractionallySizedBox(
+                            widthFactor: 1,
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(
+                                      width: 0.5,
+                                      color:
+                                          Color.fromARGB(255, 212, 180, 124)),
+                                ),
+                              ),
+                              child: const MyBookmarkBottomSheet(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  child: Column(
-                    children: [
-                      Flexible(
-                        child: FractionallySizedBox(
-                          widthFactor: 1,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Flexible(
-                                child: FractionallySizedBox(
-                                  widthFactor: 1,
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                      border: Border(
-                                        top: BorderSide(
-                                            width: 0.5,
-                                            color: Color(0xFFFFFFFF)),
-                                      ),
-                                    ),
-                                    child: InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const MainWidget()),
-                                        );
-                                      }, // button pressed
-                                      child: const Column(
-                                        //mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Icon(
-                                            //size: 20,
-                                            Icons.home_outlined,
-                                            color: Color.fromARGB(
-                                                255, 212, 180, 124),
-                                          ), // icon
-                                          Text(" الواجهة الرئيسية",
-                                              textDirection: TextDirection.rtl,
-                                              textAlign: TextAlign.justify,
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: fontTitre,
-                                              )),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+                ),
+                Flexible(
+                  child: FractionallySizedBox(
+                    widthFactor: 1,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Flexible(
+                          child: FractionallySizedBox(
+                            widthFactor: 1,
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(
+                                      width: 0.5,
+                                      color:
+                                          Color.fromARGB(255, 212, 180, 124)),
                                 ),
                               ),
-                              Flexible(
-                                child: FractionallySizedBox(
-                                  widthFactor: 1,
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                      border: Border(
-                                        top: BorderSide(
-                                            width: 0.5,
-                                            color: Color.fromARGB(
-                                                255, 212, 180, 124)),
-                                        left: BorderSide(
-                                            width: 0.5,
-                                            color: Color.fromARGB(
-                                                255, 212, 180, 124)),
-                                        right: BorderSide(
-                                            width: 0.5,
-                                            color: Color.fromARGB(
-                                                255, 212, 180, 124)),
+                              child: InkWell(
+                                onTap: () {
+                                  zoomIn(ref);
+                                }, // button pressed
+                                child: const Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.zoom_in_outlined,
+                                      color: Color.fromARGB(255, 212, 180, 124),
+                                    ),
+                                    Text(
+                                      "تكبير",
+                                      textDirection: TextDirection.rtl,
+                                      textAlign: TextAlign.justify,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: fontTitre,
                                       ),
                                     ),
-                                    child: InkWell(
-                                      onTap: () {
-                                        displayTextInputDialog(context, ref);
-                                      },
-                                      child: const Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.bookmark_add_outlined,
-                                            color: Color.fromARGB(
-                                                255, 212, 180, 124),
-                                          ), // icon
-                                          Text(
-                                            "إضافة علامة",
-                                            textDirection: TextDirection.rtl,
-                                            textAlign: TextAlign.justify,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontFamily: fontTitre,
-                                            ),
-                                          ), // text
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+                                  ],
                                 ),
                               ),
-                              Flexible(
-                                child: FractionallySizedBox(
-                                  widthFactor: 1,
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                      border: Border(
-                                        top: BorderSide(
-                                            width: 0.5,
-                                            color: Color.fromARGB(
-                                                255, 212, 180, 124)),
-                                      ),
-                                    ),
-                                    child: const MyBookmarkBottomSheet(),
-                                  ),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                      Flexible(
-                        child: FractionallySizedBox(
-                          widthFactor: 1,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Flexible(
-                                child: FractionallySizedBox(
-                                  widthFactor: 1,
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                      border: Border(
-                                        top: BorderSide(
-                                            width: 0.5,
-                                            color: Color.fromARGB(
-                                                255, 212, 180, 124)),
-                                      ),
-                                    ),
-                                    child: InkWell(
-                                      onTap: () {
-                                        zoomIn(ref);
-                                      }, // button pressed
-                                      child: const Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.zoom_in_outlined,
-                                            color: Color.fromARGB(
-                                                255, 212, 180, 124),
-                                          ),
-                                          Text(
-                                            "تكبير",
-                                            textDirection: TextDirection.rtl,
-                                            textAlign: TextAlign.justify,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontFamily: fontTitre,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                        Flexible(
+                          child: FractionallySizedBox(
+                            widthFactor: 1,
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(
+                                    width: 0.5,
+                                    color: Color.fromARGB(255, 212, 180, 124),
+                                  ),
+                                  right: BorderSide(
+                                    width: 0.5,
+                                    color: Color.fromARGB(255, 212, 180, 124),
                                   ),
                                 ),
                               ),
-                              Flexible(
-                                child: FractionallySizedBox(
-                                  widthFactor: 1,
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                      border: Border(
-                                        top: BorderSide(
-                                          width: 0.5,
-                                          color: Color.fromARGB(
-                                              255, 212, 180, 124),
-                                        ),
-                                        right: BorderSide(
-                                          width: 0.5,
-                                          color: Color.fromARGB(
-                                              255, 212, 180, 124),
-                                        ),
+                              child: InkWell(
+                                onTap: () {
+                                  zoomDefault(ref);
+                                }, // button pressed
+                                child: const Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.crop_free_outlined,
+                                      color: Color.fromARGB(255, 212, 180, 124),
+                                    ),
+                                    Text(
+                                      "100%",
+                                      textDirection: TextDirection.rtl,
+                                      textAlign: TextAlign.justify,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: fontTitre,
                                       ),
                                     ),
-                                    child: InkWell(
-                                      onTap: () {
-                                        zoomDefault(ref);
-                                      }, // button pressed
-                                      child: const Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.crop_free_outlined,
-                                            color: Color.fromARGB(
-                                                255, 212, 180, 124),
-                                          ),
-                                          Text(
-                                            "100%",
-                                            textDirection: TextDirection.rtl,
-                                            textAlign: TextAlign.justify,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontFamily: fontTitre,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+                                  ],
                                 ),
                               ),
-                              Flexible(
-                                child: FractionallySizedBox(
-                                  widthFactor: 1,
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                      border: Border(
-                                        top: BorderSide(
-                                            width: 0.5,
-                                            color: Color.fromARGB(
-                                                255, 212, 180, 124)),
-                                        right: BorderSide(
-                                          width: 0.5,
-                                          color: Color.fromARGB(
-                                              255, 212, 180, 124),
-                                        ),
-                                      ),
-                                    ),
-                                    child: InkWell(
-                                      // splash color
-                                      onTap: () {
-                                        zoomOut(ref);
-                                      }, // button pressed
-                                      child: const Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.zoom_out_outlined,
-                                            color: Color.fromARGB(
-                                                255, 212, 180, 124),
-                                          ),
-                                          Text(
-                                            "تصغير",
-                                            textDirection: TextDirection.rtl,
-                                            textAlign: TextAlign.justify,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontFamily: fontTitre,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Flexible(
-                                child: FractionallySizedBox(
-                                  widthFactor: 1,
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                      border: Border(
-                                        top: BorderSide(
-                                          width: 0.5,
-                                          color: Color.fromARGB(
-                                              255, 212, 180, 124),
-                                        ),
-                                        right: BorderSide(
-                                            width: 0.5,
-                                            color: Color.fromARGB(
-                                                255, 212, 180, 124)),
-                                      ),
-                                    ),
-                                    child: const MyTocBottomSheet(),
-                                  ),
-                                ),
-                              ),
-                              Flexible(
-                                child: FractionallySizedBox(
-                                  widthFactor: 1,
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                      border: Border(
-                                        top: BorderSide(
-                                            width: 0.5,
-                                            color: Color.fromARGB(
-                                                255, 212, 180, 124)),
-                                        right: BorderSide(
-                                            width: 0.5,
-                                            color: Color.fromARGB(
-                                                255, 212, 180, 124)),
-                                      ),
-                                    ),
-                                    child: InkWell(
-                                      onTap: () {
-                                        showModalBottomSheet(
-                                          elevation: 10,
-                                          barrierColor: Colors.transparent,
-                                          backgroundColor: Colors.transparent,
-                                          context: context,
-                                          enableDrag: true,
-                                          builder: (ctx) => Container(
-                                            width: double.infinity,
-                                            height: double.infinity,
-                                            color: Colors.transparent,
-                                            alignment: Alignment.center,
-                                            child: MyNumPad(),
-                                          ),
-                                        );
-                                      },
-                                      child: const Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons
-                                                .switch_access_shortcut_outlined,
-                                            color: Color.fromARGB(
-                                                255, 212, 180, 124),
-                                          ),
-                                          Text(
-                                            "إذهب إلى",
-                                            textDirection: TextDirection.rtl,
-                                            textAlign: TextAlign.justify,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontFamily: fontTitre,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                        Flexible(
+                          child: FractionallySizedBox(
+                            widthFactor: 1,
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(
+                                      width: 0.5,
+                                      color:
+                                          Color.fromARGB(255, 212, 180, 124)),
+                                  right: BorderSide(
+                                    width: 0.5,
+                                    color: Color.fromARGB(255, 212, 180, 124),
+                                  ),
+                                ),
+                              ),
+                              child: InkWell(
+                                // splash color
+                                onTap: () {
+                                  zoomOut(ref);
+                                }, // button pressed
+                                child: const Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.zoom_out_outlined,
+                                      color: Color.fromARGB(255, 212, 180, 124),
+                                    ),
+                                    Text(
+                                      "تصغير",
+                                      textDirection: TextDirection.rtl,
+                                      textAlign: TextAlign.justify,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: fontTitre,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Flexible(
+                          child: FractionallySizedBox(
+                            widthFactor: 1,
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(
+                                    width: 0.5,
+                                    color: Color.fromARGB(255, 212, 180, 124),
+                                  ),
+                                  right: BorderSide(
+                                      width: 0.5,
+                                      color:
+                                          Color.fromARGB(255, 212, 180, 124)),
+                                ),
+                              ),
+                              child: const MyTocBottomSheet(),
+                            ),
+                          ),
+                        ),
+                        Flexible(
+                          child: FractionallySizedBox(
+                            widthFactor: 1,
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(
+                                      width: 0.5,
+                                      color:
+                                          Color.fromARGB(255, 212, 180, 124)),
+                                  right: BorderSide(
+                                      width: 0.5,
+                                      color:
+                                          Color.fromARGB(255, 212, 180, 124)),
+                                ),
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                    elevation: 10,
+                                    barrierColor: Colors.transparent,
+                                    backgroundColor: Colors.transparent,
+                                    context: context,
+                                    enableDrag: true,
+                                    builder: (ctx) => Container(
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      color: Colors.transparent,
+                                      alignment: Alignment.center,
+                                      child: MyNumPad(),
+                                    ),
+                                  );
+                                },
+                                child: const Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.switch_access_shortcut_outlined,
+                                      color: Color.fromARGB(255, 212, 180, 124),
+                                    ),
+                                    Text(
+                                      "إذهب إلى",
+                                      textDirection: TextDirection.rtl,
+                                      textAlign: TextAlign.justify,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: fontTitre,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
-            )),
-      ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

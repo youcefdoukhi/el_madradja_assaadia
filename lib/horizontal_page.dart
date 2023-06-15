@@ -9,12 +9,13 @@ class HorizontalPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pageIndex = ref.read(pageIndexProvider);
+    final pageIndex = ref.read(darsIndexProvider);
+    ref.read(playerProvider).setSource(ref.read(darsAudioPathProvider));
     final PageController pageController =
         PageController(initialPage: pageIndex);
 
     ref.listen<int>(
-      pageIndexProvider,
+      darsIndexProvider,
       (int? previousCount, int newCount) {
         if (ref.read(scrollOrNotProvider) == false) {
           pageController.jumpToPage(newCount);
@@ -26,7 +27,7 @@ class HorizontalPage extends ConsumerWidget {
     Future<void> saveCurrentPage() async {
       final prefs = await SharedPreferences.getInstance();
       prefs.setInt('kitab_${ref.read(kitabNumProvider)}_page',
-          ref.read(pageIndexProvider));
+          ref.read(darsIndexProvider));
     }
 
     return Consumer(
@@ -43,8 +44,11 @@ class HorizontalPage extends ConsumerWidget {
                 scrollDirection: Axis.horizontal,
                 controller: pageController,
                 onPageChanged: (int page) => {
-                  ref.read(pageIndexProvider.notifier).state = page,
-                  saveCurrentPage()
+                  ref.read(darsIndexProvider.notifier).state = page,
+                  saveCurrentPage(),
+                  ref
+                      .read(playerProvider)
+                      .setSource(ref.read(darsAudioPathProvider)),
                 },
                 itemBuilder: (context, index) {
                   final Dars dars = dourous[index];
@@ -61,7 +65,46 @@ class HorizontalPage extends ConsumerWidget {
                       final List<Nass> nass = safha.nass;
                       return Text(nass[0].paragraph);
                     },
-                  );
+                  ); /*
+                  Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(
+                          top: 0,
+                          left: 10,
+                          right: 10,
+                          bottom: 10,
+                        ),
+                        //padding: const EdgeInsets.only(left: 10, right: 10),
+                        //height: 44,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(220, 54, 56, 89),
+                          border: Border.all(
+                            color: const Color.fromARGB(255, 212, 180, 124),
+                            width: 0.5,
+                          ),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: MyAudioPlayer2(
+                          kitab: ref.read(kitabNumProvider),
+                          dars: ref.read(darsIndexProvider),
+                        ),
+                      ),
+                      Expanded(
+                        child: ScrollablePositionedList.builder(
+                          itemCount: safahat.length,
+                          key: PageStorageKey("keyString$index"),
+                          itemScrollController: itemScrollController,
+                          itemBuilder: (BuildContext context, int indexSafha) {
+                            final Safha safha = safahat[indexSafha];
+                            final List<Nass> nass = safha.nass;
+                            return Text(nass[0].paragraph);
+                          },
+                        ),
+                      ),
+                    ],
+                  );*/
                 },
               ),
             );
