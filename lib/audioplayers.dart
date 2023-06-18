@@ -10,6 +10,7 @@ class MyAudioPlayer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final audioPlayer = ref.watch(playerProvider);
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -93,7 +94,6 @@ class MyAudioPlayer extends ConsumerWidget {
             ],
           ),
         ),
-        Text(""),
       ],
     );
   }

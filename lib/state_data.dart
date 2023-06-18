@@ -100,6 +100,62 @@ final kitabDataProvider = FutureProvider<Dourous>((ref) async {
   return compute(loadData, jsonString);
 });
 
+//------------------------------------------------
+final audioPlayerProvider =
+    StateNotifierProvider<AudioPlayerNotifier, AudioPlayerState>((ref) {
+  return AudioPlayerNotifier();
+});
+
+class AudioPlayerNotifier extends StateNotifier<AudioPlayerState> {
+  
+
+  AudioPlayerNotifier() : super(AudioPlayerState());
+
+  Future<void> setSourceAudio(String filePath) async {
+    try {
+      String path = (await getApplicationDocumentsDirectory()).absolute.path;
+
+      File file = File("$path$filePath");
+      if (file.existsSync()) {
+        state = .setSourceDeviceFile(file.path);
+        // state = AudioPlayerState.sourced();
+      } else {}
+    } catch (e) {}
+  }
+}
+
+class AudioPlayerState {
+  late AudioPlayer audioPlayer;
+  late Duration duration;
+  late Duration position;
+  PlayerState playerState = PlayerState.stopped;
+  double volume = 1.0;
+  bool fileRead = false;
+
+  AudioPlayerState() {
+    audioPlayer = AudioPlayer();
+    audioPlayer.setReleaseMode(ReleaseMode.stop);
+
+    duration = Duration.zero;
+    position = Duration.zero;
+    audioPlayer.onDurationChanged.listen((Duration d) {
+      duration = d;
+      
+    });
+
+    audioPlayer.onPositionChanged.listen((Duration p) {
+      position = p;
+      
+    });
+
+    audioPlayer.onPlayerStateChanged.listen((PlayerState s) {
+      playerState = s;
+      
+    });
+  }
+}
+
+//------------------------------------------------
 final playerProvider = ChangeNotifierProvider<AudioPlayerController>(
   (ref) {
     return AudioPlayerController();
@@ -111,7 +167,6 @@ class AudioPlayerController extends ChangeNotifier {
   late Duration duration;
   late Duration position;
   PlayerState playerState = PlayerState.stopped;
-
   double volume = 1.0;
   bool fileRead = false;
 
@@ -121,16 +176,8 @@ class AudioPlayerController extends ChangeNotifier {
     audioPlayer = AudioPlayer();
     audioPlayer.setReleaseMode(ReleaseMode.stop);
 
-    position = const Duration(
-      hours: 0,
-      minutes: 0,
-      seconds: 0,
-    );
-    duration = const Duration(
-      hours: 0,
-      minutes: 0,
-      seconds: 0,
-    );
+    duration = Duration.zero;
+    position = Duration.zero;
     audioPlayer.onDurationChanged.listen((Duration d) {
       duration = d;
       notifyListeners();
@@ -155,22 +202,16 @@ class AudioPlayerController extends ChangeNotifier {
       audioPlayer.setSourceDeviceFile(file.path);
       fileRead = true;
     } else {
+      //position = Duration.zero;
+      //duration = Duration.zero;
+
       fileRead = false;
+      print("\n XXXXX: $duration");
     }
   }
 
-  Future<void> play(/* String filePath */) async {
-    /*  String path = (await getApplicationDocumentsDirectory()).absolute.path;
-
-    File file = File("$path$filePath");
-    if (file.existsSync()) {
-      audioPlayer.setSourceDeviceFile(file.path);
-      fileRead = true;
-    } else {
-      fileRead = false;
-    }*/
+  Future<void> play() async {
     (fileRead) ? await audioPlayer.resume() : null;
-    // (fileRead) ? await audioPlayer.play(DeviceFileSource(file.path)) : null;
   }
 
   Future<void> pause() async {

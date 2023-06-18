@@ -245,47 +245,107 @@ class MyPageInfo extends ConsumerWidget {
                 ),
                 child: Row(
                   children: [
-                    const Expanded(
-                      flex: 4,
+                    Expanded(
                       child: Align(
                         alignment: Alignment.centerRight,
-                        child: Text(
-                          "الجزء 10",
-                          textDirection: TextDirection.rtl,
-                          textAlign: TextAlign.justify,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: fontTitre,
-                          ),
+                        child: Column(
+                          children: [
+                            const Flexible(
+                              child: FractionallySizedBox(
+                                heightFactor: 1,
+                                child: Text(
+                                  "الكتاب",
+                                  style: TextStyle(
+                                    fontFamily: fontTitre,
+                                    color: Colors.white,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                            Flexible(
+                              child: FractionallySizedBox(
+                                heightFactor: 1,
+                                child: Text(
+                                  "${ref.watch(kitabNumProvider)}",
+                                  style: const TextStyle(
+                                    fontFamily: fontTitre,
+                                    color: Colors.white,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                     Expanded(
-                      flex: 2,
                       child: Center(
-                        child: Text(
-                          "${page + 1}",
-                          textDirection: TextDirection.rtl,
-                          textAlign: TextAlign.justify,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontFamily: fontTitre,
-                          ),
+                        child: Column(
+                          children: [
+                            const Flexible(
+                              child: FractionallySizedBox(
+                                heightFactor: 1,
+                                child: Text(
+                                  "الدرس",
+                                  style: TextStyle(
+                                    fontFamily: fontTitre,
+                                    color: Colors.white,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                            Flexible(
+                              child: FractionallySizedBox(
+                                heightFactor: 1,
+                                child: Text(
+                                  "${page + 1}",
+                                  style: const TextStyle(
+                                    fontFamily: fontTitre,
+                                    color: Colors.white,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                     const Expanded(
-                      flex: 4,
                       child: Align(
                         alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Surah",
-                          textDirection: TextDirection.rtl,
-                          textAlign: TextAlign.justify,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: fontTitre,
-                          ),
+                        child: Column(
+                          children: [
+                            Flexible(
+                              child: FractionallySizedBox(
+                                heightFactor: 1,
+                                child: Text(
+                                  "الصفحة",
+                                  style: TextStyle(
+                                    fontFamily: fontTitre,
+                                    color: Colors.white,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                            Flexible(
+                              child: FractionallySizedBox(
+                                heightFactor: 1,
+                                child: Text(
+                                  "X",
+                                  style: TextStyle(
+                                    fontFamily: fontTitre,
+                                    color: Colors.white,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     )

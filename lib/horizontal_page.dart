@@ -10,9 +10,11 @@ class HorizontalPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pageIndex = ref.read(darsIndexProvider);
-    ref.read(playerProvider).setSource(ref.read(darsAudioPathProvider));
+
     final PageController pageController =
         PageController(initialPage: pageIndex);
+
+    ref.read(playerProvider).setSource(ref.read(darsAudioPathProvider));
 
     ref.listen<int>(
       darsIndexProvider,
