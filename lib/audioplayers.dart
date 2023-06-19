@@ -27,16 +27,16 @@ class MyAudioPlayer extends ConsumerWidget {
             min: 0.0,
             max: audioPlayer.duration.inSeconds.toDouble(),
             onChanged: (newValue) {
-              ref.read(playerProvider).position = Duration(
+              audioPlayer.position = Duration(
                 seconds: newValue.toInt(),
               );
             },
             onChangeEnd: (newValue) {
-              audioPlayer.seek(
-                Duration(
-                  seconds: newValue.toInt(),
-                ),
-              );
+              ref.read(playerProvider).seek(
+                    Duration(
+                      seconds: newValue.toInt(),
+                    ),
+                  );
             },
           ),
         ),
@@ -51,28 +51,28 @@ class MyAudioPlayer extends ConsumerWidget {
                           icon: const Icon(Icons.play_circle),
                           color: const Color.fromARGB(255, 212, 180, 124),
                           onPressed: () {
-                            audioPlayer.play();
+                            ref.read(playerProvider).play();
                           },
                         )
                       : IconButton(
                           icon: const Icon(Icons.pause_circle),
                           color: const Color.fromARGB(255, 212, 180, 124),
                           onPressed: () {
-                            audioPlayer.pause();
+                            ref.read(playerProvider).pause();
                           },
                         )),
                   IconButton(
                     icon: const Icon(Icons.volume_up),
                     color: const Color.fromARGB(255, 212, 180, 124),
                     onPressed: () {
-                      audioPlayer.volumeUp();
+                      ref.read(playerProvider).volumeUp();
                     },
                   ),
                   IconButton(
                     icon: const Icon(Icons.volume_down),
                     color: const Color.fromARGB(255, 212, 180, 124),
                     onPressed: () {
-                      audioPlayer.volumeDown();
+                      ref.read(playerProvider).volumeDown();
                     },
                   ),
                 ],
@@ -94,6 +94,7 @@ class MyAudioPlayer extends ConsumerWidget {
             ],
           ),
         ),
+        Text(ref.watch(playerProvider).playerState.toString()),
       ],
     );
   }

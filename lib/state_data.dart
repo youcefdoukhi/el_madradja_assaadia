@@ -100,84 +100,24 @@ final kitabDataProvider = FutureProvider<Dourous>((ref) async {
   return compute(loadData, jsonString);
 });
 
-//------------------------------------------------
-final audioPlayerProvider =
-    StateNotifierProvider<AudioPlayerNotifier, AudioPlayerState>((ref) {
-  return AudioPlayerNotifier();
-});
-
-class AudioPlayerNotifier extends StateNotifier<AudioPlayerState> {
-  
-
-  AudioPlayerNotifier() : super(AudioPlayerState());
-
-  Future<void> setSourceAudio(String filePath) async {
-    try {
-      String path = (await getApplicationDocumentsDirectory()).absolute.path;
-
-      File file = File("$path$filePath");
-      if (file.existsSync()) {
-        state = .setSourceDeviceFile(file.path);
-        // state = AudioPlayerState.sourced();
-      } else {}
-    } catch (e) {}
-  }
-}
-
-class AudioPlayerState {
-  late AudioPlayer audioPlayer;
-  late Duration duration;
-  late Duration position;
-  PlayerState playerState = PlayerState.stopped;
-  double volume = 1.0;
-  bool fileRead = false;
-
-  AudioPlayerState() {
-    audioPlayer = AudioPlayer();
-    audioPlayer.setReleaseMode(ReleaseMode.stop);
-
-    duration = Duration.zero;
-    position = Duration.zero;
-    audioPlayer.onDurationChanged.listen((Duration d) {
-      duration = d;
-      
-    });
-
-    audioPlayer.onPositionChanged.listen((Duration p) {
-      position = p;
-      
-    });
-
-    audioPlayer.onPlayerStateChanged.listen((PlayerState s) {
-      playerState = s;
-      
-    });
-  }
-}
-
-//------------------------------------------------
 final playerProvider = ChangeNotifierProvider<AudioPlayerController>(
   (ref) {
+    // final String filePath = ref.watch(darsAudioPathProvider);
     return AudioPlayerController();
   },
 );
 
 class AudioPlayerController extends ChangeNotifier {
-  late AudioPlayer audioPlayer;
-  late Duration duration;
-  late Duration position;
+  AudioPlayer audioPlayer = AudioPlayer();
+  Duration duration = Duration.zero;
+  Duration position = Duration.zero;
   PlayerState playerState = PlayerState.stopped;
   double volume = 1.0;
-  bool fileRead = false;
+  bool fileFound = false;
 
   AudioPlayerController() {
-    //AudioLogger.logLevel = AudioLogLevel.none;
-
-    audioPlayer = AudioPlayer();
     audioPlayer.setReleaseMode(ReleaseMode.stop);
 
-    duration = Duration.zero;
-    position = Duration.zero;
     audioPlayer.onDurationChanged.listen((Duration d) {
       duration = d;
       notifyListeners();
@@ -196,40 +136,38 @@ class AudioPlayerController extends ChangeNotifier {
 
   Future<void> setSource(String filePath) async {
     String path = (await getApplicationDocumentsDirectory()).absolute.path;
-
     File file = File("$path$filePath");
     if (file.existsSync()) {
       audioPlayer.setSourceDeviceFile(file.path);
-      fileRead = true;
+      fileFound = true;
     } else {
-      //position = Duration.zero;
-      //duration = Duration.zero;
-
-      fileRead = false;
-      print("\n XXXXX: $duration");
+      fileFound = false;
+      _reset();
     }
   }
 
   Future<void> play() async {
-    (fileRead) ? await audioPlayer.resume() : null;
+    (fileFound) ? await audioPlayer.resume() : null;
   }
 
   Future<void> pause() async {
-    await audioPlayer.pause();
+    (fileFound) ? await audioPlayer.pause() : null;
   }
 
   Future<void> stop() async {
-    await audioPlayer.stop();
+    (fileFound) ? await audioPlayer.stop() : null;
   }
 
   Future<void> release() async {
-    await audioPlayer.release();
+    (fileFound) ? await audioPlayer.release() : null;
   }
 
   Future<void> seek(Duration d) async {
-    await audioPlayer.seek(
-      d,
-    );
+    (fileFound)
+        ? await audioPlayer.seek(
+            d,
+          )
+        : null;
   }
 
   Future<void> volumeUp() async {
@@ -244,6 +182,13 @@ class AudioPlayerController extends ChangeNotifier {
       volume = volume - 0.1;
       await audioPlayer.setVolume(volume);
     }
+  }
+
+  void _reset() {
+    audioPlayer.release();
+    duration = Duration.zero;
+    position = Duration.zero;
+    playerState = PlayerState.stopped;
   }
 }
 
@@ -354,8 +299,7 @@ final darsAudioPathProvider = StateProvider<String>(
   (ref) {
     final kitabNum = ref.watch(kitabNumProvider);
     final darsNum = ref.watch(darsIndexProvider);
-    // print("\n KITAB : $kitabNum");
-    // print("\n DARS : $darsNum");
+
     String filePath = "/MP3/";
     if (kitabNum < 10) {
       filePath = "${filePath}0${kitabNum}_";
