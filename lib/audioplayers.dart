@@ -94,11 +94,14 @@ class MyAudioPlayer extends ConsumerWidget {
             ],
           ),
         ),
-        Text(ref.watch(playerProvider).playerState.toString()),
+        (ref.watch(playerProvider).fileFound)
+            ? Text(ref.watch(playerProvider).playerState.toString())
+            : const Text("\n Afficher Download"),
       ],
     );
   }
 }
+
 /*
 class MyAudioPlayer {
   static final MyAudioPlayer _singleton = MyAudioPlayer._internal();

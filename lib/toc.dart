@@ -58,9 +58,12 @@ class TOCWidget extends ConsumerWidget {
                     return GestureDetector(
                       onTap: () => {
                         ref.read(scrollOrNotProvider.notifier).state = false,
-                        ref.read(darsIndexProvider.notifier).state =
+                        ref.read(darsNumProvider.notifier).state =
                             objet.page - 1,
                         ref.read(showPageInfoProvider.notifier).state = false,
+                        ref
+                            .read(playerProvider)
+                            .setSource(ref.read(darsAudioPathProvider)),
                         Navigator.pop(context),
                       },
                       child: Container(

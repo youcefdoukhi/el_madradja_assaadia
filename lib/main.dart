@@ -186,10 +186,26 @@ class MainWidget extends ConsumerWidget {
                               builder: (context) => Consumer(
                                 builder: (context, ref, child) {
                                   final indexFromSP =
-                                      ref.watch(darsIndexFromSharedPref);
+                                      ref.watch(darsNumFromSPProvider);
+
                                   return indexFromSP.when(
                                     data: (data) {
-                                      return const ReaderWidget();
+                                      return Consumer(
+                                        builder: (context, ref, child) {
+                                          final darsAudioFromSP = ref.watch(
+                                              darsAudioPositionFromSPProvider);
+
+                                          return darsAudioFromSP.when(
+                                            data: (data) {
+                                              return const ReaderWidget();
+                                            },
+                                            loading: () =>
+                                                const CircularProgressIndicator(),
+                                            error: (error, _) =>
+                                                Text('Error: $error'),
+                                          );
+                                        },
+                                      );
                                     },
                                     loading: () => const Center(
                                       child: CircularProgressIndicator(),
@@ -247,7 +263,7 @@ class MainWidget extends ConsumerWidget {
                               builder: (context) => Consumer(
                                 builder: (context, ref, child) {
                                   final indexFromSP =
-                                      ref.watch(darsIndexFromSharedPref);
+                                      ref.watch(darsNumFromSPProvider);
                                   return indexFromSP.when(
                                     data: (data) {
                                       return const ReaderWidget();
@@ -313,7 +329,7 @@ class MainWidget extends ConsumerWidget {
                               builder: (context) => Consumer(
                                 builder: (context, ref, child) {
                                   final indexFromSP =
-                                      ref.watch(darsIndexFromSharedPref);
+                                      ref.watch(darsNumFromSPProvider);
                                   return indexFromSP.when(
                                     data: (data) {
                                       return const ReaderWidget();
@@ -374,7 +390,7 @@ class MainWidget extends ConsumerWidget {
                               builder: (context) => Consumer(
                                 builder: (context, ref, child) {
                                   final indexFromSP =
-                                      ref.watch(darsIndexFromSharedPref);
+                                      ref.watch(darsNumFromSPProvider);
                                   return indexFromSP.when(
                                     data: (data) {
                                       return const ReaderWidget();
@@ -435,7 +451,7 @@ class MainWidget extends ConsumerWidget {
                               builder: (context) => Consumer(
                                 builder: (context, ref, child) {
                                   final indexFromSP =
-                                      ref.watch(darsIndexFromSharedPref);
+                                      ref.watch(darsNumFromSPProvider);
                                   return indexFromSP.when(
                                     data: (data) {
                                       return const ReaderWidget();

@@ -22,8 +22,7 @@ class _BookmarksListState extends ConsumerState<BookmarksList> {
 
   goToSavedBookmark() {
     ref.read(scrollOrNotProvider.notifier).state = false;
-    ref.read(darsIndexProvider.notifier).state =
-        ref.read(savedBookmarkProvider);
+    ref.read(darsNumProvider.notifier).state = ref.read(savedBookmarkProvider);
     ref.read(showPageInfoProvider.notifier).state = false;
   }
 
@@ -94,7 +93,7 @@ class _BookmarksListState extends ConsumerState<BookmarksList> {
                                 onTap: () {
                                   ref.read(scrollOrNotProvider.notifier).state =
                                       false;
-                                  ref.read(darsIndexProvider.notifier).state =
+                                  ref.read(darsNumProvider.notifier).state =
                                       int.parse(_marks[index].split('/')[0]);
                                   ref
                                       .read(showPageInfoProvider.notifier)

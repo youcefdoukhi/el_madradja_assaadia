@@ -59,9 +59,8 @@ class MyPageInfo extends ConsumerWidget {
 
   Future<void> _saveBookmark(ref) async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setInt('mushaf01_bookmark', ref.read(darsIndexProvider));
-    ref.read(savedBookmarkProvider.notifier).state =
-        ref.read(darsIndexProvider);
+    prefs.setInt('mushaf01_bookmark', ref.read(darsNumProvider));
+    ref.read(savedBookmarkProvider.notifier).state = ref.read(darsNumProvider);
     ref.read(showPageInfoProvider.notifier).state = false;
   }
 
@@ -121,7 +120,7 @@ class MyPageInfo extends ConsumerWidget {
     ref.read(marksProvider.notifier).state =
         (prefs.getStringList('marks') ?? []);
     ref.read(marksProvider.notifier).state.add(
-        "${ref.read(darsIndexProvider)}/${getDate(DateTime.now())}/$marqueInfo");
+        "${ref.read(darsNumProvider)}/${getDate(DateTime.now())}/$marqueInfo");
     prefs.setStringList('marks', ref.read(marksProvider));
     ref.read(marksInfoProvider.notifier).state = "------";
   }
@@ -137,70 +136,71 @@ class MyPageInfo extends ConsumerWidget {
   }
 
   final TextEditingController _textFieldController = TextEditingController();
-  displayTextInputDialog(BuildContext context, WidgetRef ref) async {
+  displayTextInputDialog(BuildContext ctx, WidgetRef ref) {
     _textFieldController.clear();
 
     ref.read(marksInfoProvider.notifier).state = "------";
 
     return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: TextField(
-              autofocus: true,
-              style: const TextStyle(
-                fontSize: 14,
-              ),
-              onChanged: (value) {
-                ref.read(marksInfoProvider.notifier).state = value;
-              },
-              controller: _textFieldController,
-              decoration: const InputDecoration(
-                hintText: "أضف كلمات تذكرك...",
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Color.fromARGB(220, 54, 56, 89),
-                  ),
+      context: ctx,
+      builder: (context2) {
+        return AlertDialog(
+          content: TextField(
+            autofocus: true,
+            style: const TextStyle(
+              fontSize: 14,
+            ),
+            onChanged: (value) {
+              ref.read(marksInfoProvider.notifier).state = value;
+            },
+            controller: _textFieldController,
+            decoration: const InputDecoration(
+              hintText: "أضف كلمات تذكرك...",
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color.fromARGB(220, 54, 56, 89),
                 ),
               ),
             ),
-            actions: <Widget>[
-              TextButton(
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: const Color.fromARGB(255, 212, 180, 124),
-                ),
-                child: const Text(
-                  'إلغاء',
-                  style: TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
-                onPressed: () {
-                  ref.read(marksInfoProvider.notifier).state = "------";
-                  Navigator.pop(context);
-                },
+          ),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: const Color.fromARGB(255, 212, 180, 124),
               ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: const Color.fromARGB(220, 54, 56, 89),
+              child: const Text(
+                'إلغاء',
+                style: TextStyle(
+                  fontSize: 14,
                 ),
-                child: const Text(
-                  'حفظ',
-                  style: TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
-                onPressed: () {
-                  _saveMarksList(ref, ref.read(marksInfoProvider));
-                  Navigator.pop(context);
-                  showStatus(context);
-                },
               ),
-            ],
-          );
-        });
+              onPressed: () {
+                ref.read(marksInfoProvider.notifier).state = "------";
+                Navigator.pop(context2);
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: const Color.fromARGB(220, 54, 56, 89),
+              ),
+              child: const Text(
+                'حفظ',
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+              onPressed: () {
+                _saveMarksList(ref, ref.read(marksInfoProvider));
+                Navigator.pop(context2);
+                showStatus(context2);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   showStatus(ctext) {
@@ -222,7 +222,7 @@ class MyPageInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    int page = ref.watch(darsIndexProvider);
+    int page = ref.watch(darsNumProvider);
 
     return Visibility(
       visible: ref.watch(showPageInfoProvider),
@@ -460,8 +460,7 @@ class MyPageInfo extends ConsumerWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            const MainWidget()),
+                                        builder: (context) => const MyApp()),
                                   );
                                 }, // button pressed
                                 child: const Column(
@@ -812,10 +811,11 @@ class MyBookmarkBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Scaffold.of(context).showBottomSheet<void>(
-          (BuildContext context) {
-            return const BookmarksList();
-          },
+        showModalBottomSheet(
+          isScrollControlled: true,
+          context: context,
+          enableDrag: true,
+          builder: (ctx) => const BookmarksList(),
         );
       },
       child: const Column(

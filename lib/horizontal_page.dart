@@ -1,4 +1,5 @@
 import 'package:el_madradja_assaadia/state_data.dart';
+import 'package:el_madradja_assaadia/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,7 +10,7 @@ class HorizontalPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pageIndex = ref.read(darsIndexProvider);
+    final pageIndex = ref.read(darsNumProvider);
 
     final PageController pageController =
         PageController(initialPage: pageIndex);
@@ -17,10 +18,11 @@ class HorizontalPage extends ConsumerWidget {
     ref.read(playerProvider).setSource(ref.read(darsAudioPathProvider));
 
     ref.listen<int>(
-      darsIndexProvider,
+      darsNumProvider,
       (int? previousCount, int newCount) {
         if (ref.read(scrollOrNotProvider) == false) {
           pageController.jumpToPage(newCount);
+
           ref.read(scrollOrNotProvider.notifier).state = true;
         }
       },
@@ -29,7 +31,7 @@ class HorizontalPage extends ConsumerWidget {
     Future<void> saveCurrentPage() async {
       final prefs = await SharedPreferences.getInstance();
       prefs.setInt('kitab_${ref.read(kitabNumProvider)}_page',
-          ref.read(darsIndexProvider));
+          ref.read(darsNumProvider));
     }
 
     return Consumer(
@@ -46,7 +48,7 @@ class HorizontalPage extends ConsumerWidget {
                 scrollDirection: Axis.horizontal,
                 controller: pageController,
                 onPageChanged: (int page) => {
-                  ref.read(darsIndexProvider.notifier).state = page,
+                  ref.read(darsNumProvider.notifier).state = page,
                   saveCurrentPage(),
                   ref
                       .read(playerProvider)

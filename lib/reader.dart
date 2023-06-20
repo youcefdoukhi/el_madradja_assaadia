@@ -12,7 +12,7 @@ class ReaderWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return WillPopScope(
       onWillPop: () async {
-        return true;
+        return false;
       },
       child: Scaffold(
         body: SafeArea(
