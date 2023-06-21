@@ -58,7 +58,9 @@ class TOCWidget extends ConsumerWidget {
                     return GestureDetector(
                       onTap: () => {
                         ref.read(scrollOrNotProvider.notifier).state = false,
-                        ref.read(darsNumProvider.notifier).state =
+                        ref
+                                .read(darsNumProvider.notifier)
+                                .state[ref.read(kitabNumProvider) - 1] =
                             objet.page - 1,
                         ref.read(showPageInfoProvider.notifier).state = false,
                         ref

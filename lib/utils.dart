@@ -83,30 +83,55 @@ Dourous loadData(jsonString) {
   return objets;
 }
 
-class AudioPositionInfo {
-  String key;
-  double position;
-  AudioPositionInfo({required this.key, required this.position});
-}
+//****************************************************************
 
-String getStringKeyFromKitabDars(int kitabNum, int darsNum) {
-  return "K:${kitabNum}_D:${darsNum}_AudioPosition";
-}
-
-Future<bool> setDarsAudioPosition(AudioPositionInfo audioPosInfo) async {
-  final prefs = await SharedPreferences.getInstance();
-  return prefs.setDouble(audioPosInfo.key, audioPosInfo.position);
-}
-
-Future<double> getDarsAudioPositionFromSP(String key) async {
-  final prefs = await SharedPreferences.getInstance();
-
-  double? position = prefs.getDouble(key);
-  if (position != null) {
-    return position;
+Future<List<int>> getKutubLatestDarsNumFromSP() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? encodedList = prefs.getString('kutubLatestDarsNumList');
+  if (encodedList != null) {
+    List<int> decodedList = json.decode(encodedList);
+    List<int> integerList = List<int>.from(decodedList);
+    return integerList;
+  } else {
+    return [0, 0, 0, 0, 0];
   }
-  return 0.0;
 }
+
+Future<bool> setKutubLatestDarsNumToSP(List<int> latestDarsNumList) async {
+  String encodedList = json.encode(latestDarsNumList);
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return await prefs.setString('kutubLatestDarsNumList', encodedList);
+}
+
+//****************************************************************
+
+Future<List<List<int>>> getLatestAudioPositionDarsFromSP() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? encodedList = prefs.getString('latestAudioPositionDarsList');
+  if (encodedList != null) {
+    List<dynamic> decodedList = json.decode(encodedList);
+    List<List<int>> myList =
+        decodedList.map<List<int>>((item) => List<int>.from(item)).toList();
+    return myList;
+  } else {
+    return [
+      [0, 0],
+      [0, 0],
+      [0, 0],
+      [0, 0],
+      [0, 0]
+    ];
+  }
+}
+
+Future<bool> setLatestAudioPositionDarsToSP(
+    List<List<int>> latestAudioPositionList) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String encodedList = json.encode(latestAudioPositionList);
+  return await prefs.setString('latestAudioPositionDarsList', encodedList);
+}
+
+//****************************************************************
 
 class MyDarss {
   final int index;

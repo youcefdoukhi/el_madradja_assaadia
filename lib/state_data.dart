@@ -26,40 +26,38 @@ final kitabNumProvider = StateProvider<int>(
 
 //***************************************************
 
-final darsNumFromSPProvider = FutureProvider<int>((ref) async {
-  final kitabNum = ref.watch(kitabNumProvider);
-  final prefs = await SharedPreferences.getInstance();
-  int? currentPage = prefs.getInt('kitab_${kitabNum}_page');
-  if (currentPage != null) {
-    return currentPage;
-  } else {
-    return 0;
-  }
+final kutubLatestDarsNumFromSPProvider = FutureProvider<List<int>>((ref) async {
+  final List<int> latestDarsNumList = await getKutubLatestDarsNumFromSP();
+  return latestDarsNumList;
 });
 
-final darsNumProvider = StateProvider<int>(
+final darsNumProvider = StateProvider<List<int>>(
   (ref) {
-    final futureValue = ref.watch(darsNumFromSPProvider);
-    return futureValue.asData?.value ?? 0;
+    final futureValue = ref.watch(kutubLatestDarsNumFromSPProvider);
+    return futureValue.asData?.value ?? [0, 0, 0, 0, 0];
   },
 );
 
 //***************************************************
 
-final darsAudioPositionFromSPProvider = FutureProvider<double>(
-  (ref) async {
-    final kitabNum = ref.watch(kitabNumProvider);
-    final darsNum = ref.watch(darsNumProvider);
-    final double position = await getDarsAudioPositionFromSP(
-        getStringKeyFromKitabDars(kitabNum, darsNum));
-    return position;
-  },
-);
+final latestAudioPositionDarsFromSPProvider =
+    FutureProvider<List<List<int>>>((ref) async {
+  final List<List<int>> latestAudioPositionList =
+      await getLatestAudioPositionDarsFromSP();
+  return latestAudioPositionList;
+});
 
-final darsAudioPositionProvider = StateProvider<double>(
+final audioPositionDarsProvider = StateProvider<List<List<int>>>(
   (ref) {
-    final futureValue = ref.watch(darsAudioPositionFromSPProvider);
-    return futureValue.asData?.value ?? 0.0;
+    final futureValue = ref.watch(latestAudioPositionDarsFromSPProvider);
+    return futureValue.asData?.value ??
+        [
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0]
+        ];
   },
 );
 
@@ -67,9 +65,8 @@ final darsAudioPositionProvider = StateProvider<double>(
 
 final darsAudioPathProvider = StateProvider<String>(
   (ref) {
-    final kitabNum = ref.watch(kitabNumProvider);
-    final darsNum = ref.watch(darsNumProvider);
-
+    final int kitabNum = ref.watch(kitabNumProvider);
+    final darsNum = ref.watch(darsNumProvider)[kitabNum - 1];
     String filePath = "/MP3/";
     if (kitabNum < 10) {
       filePath = "${filePath}0${kitabNum}_";
@@ -122,6 +119,7 @@ class AudioPlayerController extends ChangeNotifier {
   }
 
   Future<void> setSource(String filePath) async {
+    audioPlayer.pause();
     String path = (await getApplicationDocumentsDirectory()).absolute.path;
     File file = File("$path$filePath");
     if (file.existsSync()) {

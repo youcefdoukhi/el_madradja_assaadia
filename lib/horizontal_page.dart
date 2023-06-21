@@ -2,7 +2,6 @@ import 'package:el_madradja_assaadia/state_data.dart';
 import 'package:el_madradja_assaadia/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class HorizontalPage extends ConsumerWidget {
@@ -10,29 +9,23 @@ class HorizontalPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pageIndex = ref.read(darsNumProvider);
+    final int darsNum =
+        ref.read(darsNumProvider)[ref.read(kitabNumProvider) - 1];
 
-    final PageController pageController =
-        PageController(initialPage: pageIndex);
+    final PageController pageController = PageController(initialPage: darsNum);
 
     ref.read(playerProvider).setSource(ref.read(darsAudioPathProvider));
 
-    ref.listen<int>(
+    ref.listen<List<int>>(
       darsNumProvider,
-      (int? previousCount, int newCount) {
+      (List<int>? previousCount, List<int> newCount) {
         if (ref.read(scrollOrNotProvider) == false) {
-          pageController.jumpToPage(newCount);
+          pageController.jumpToPage(newCount[ref.read(kitabNumProvider) - 1]);
 
           ref.read(scrollOrNotProvider.notifier).state = true;
         }
       },
     );
-
-    Future<void> saveCurrentPage() async {
-      final prefs = await SharedPreferences.getInstance();
-      prefs.setInt('kitab_${ref.read(kitabNumProvider)}_page',
-          ref.read(darsNumProvider));
-    }
 
     return Consumer(
       builder: (context, ref, child) {
@@ -48,8 +41,10 @@ class HorizontalPage extends ConsumerWidget {
                 scrollDirection: Axis.horizontal,
                 controller: pageController,
                 onPageChanged: (int page) => {
-                  ref.read(darsNumProvider.notifier).state = page,
-                  saveCurrentPage(),
+                  ref.read(darsNumProvider.notifier).state = [
+                    ...ref.read(darsNumProvider.notifier).state
+                  ]..[ref.read(kitabNumProvider) - 1] = page,
+                  setKutubLatestDarsNumToSP(ref.read(darsNumProvider)),
                   ref
                       .read(playerProvider)
                       .setSource(ref.read(darsAudioPathProvider)),
@@ -69,46 +64,7 @@ class HorizontalPage extends ConsumerWidget {
                       final List<Nass> nass = safha.nass;
                       return Text(nass[0].paragraph);
                     },
-                  ); /*
-                  Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(
-                          top: 0,
-                          left: 10,
-                          right: 10,
-                          bottom: 10,
-                        ),
-                        //padding: const EdgeInsets.only(left: 10, right: 10),
-                        //height: 44,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(220, 54, 56, 89),
-                          border: Border.all(
-                            color: const Color.fromARGB(255, 212, 180, 124),
-                            width: 0.5,
-                          ),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: MyAudioPlayer2(
-                          kitab: ref.read(kitabNumProvider),
-                          dars: ref.read(darsIndexProvider),
-                        ),
-                      ),
-                      Expanded(
-                        child: ScrollablePositionedList.builder(
-                          itemCount: safahat.length,
-                          key: PageStorageKey("keyString$index"),
-                          itemScrollController: itemScrollController,
-                          itemBuilder: (BuildContext context, int indexSafha) {
-                            final Safha safha = safahat[indexSafha];
-                            final List<Nass> nass = safha.nass;
-                            return Text(nass[0].paragraph);
-                          },
-                        ),
-                      ),
-                    ],
-                  );*/
+                  );
                 },
               ),
             );
@@ -128,7 +84,9 @@ class HorizontalPage extends ConsumerWidget {
                     ).image,
                   ),
                 ),
-                child: const Center(child: CircularProgressIndicator()),
+                child: const Center(
+                    child: CircularProgressIndicator(
+                        color: Color.fromARGB(255, 212, 180, 124))),
               ),
             ),
           ),

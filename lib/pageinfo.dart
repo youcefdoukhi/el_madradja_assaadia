@@ -222,8 +222,8 @@ class MyPageInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    int page = ref.watch(darsNumProvider);
-
+    List<int> darsNumList = ref.watch(darsNumProvider);
+    int page = darsNumList[ref.read(kitabNumProvider) - 1];
     return Visibility(
       visible: ref.watch(showPageInfoProvider),
       child: Column(

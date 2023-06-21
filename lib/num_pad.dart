@@ -69,7 +69,9 @@ class MyNumPad extends ConsumerWidget {
                 : null;
             if (page != null && page > 0 && page < 56) {
               ref.read(scrollOrNotProvider.notifier).state = false;
-              ref.read(darsNumProvider.notifier).state = page - 1;
+              ref
+                  .read(darsNumProvider.notifier)
+                  .state[ref.read(kitabNumProvider) - 1] = page - 1;
               ref.read(showPageInfoProvider.notifier).state = false;
               ref
                   .read(playerProvider)

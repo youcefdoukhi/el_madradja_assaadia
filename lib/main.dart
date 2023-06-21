@@ -44,10 +44,69 @@ class MyApp extends StatelessWidget {
         body: SafeArea(
           child: Consumer(
             builder: (ctx, ref, child) {
-              final listSurah = ref.watch(myDarssListProvider);
-              return listSurah.when(
+              final listDars = ref.watch(myDarssListProvider);
+              return listDars.when(
                 data: (objets2) {
-                  return const MainWidget();
+                  return Consumer(
+                    builder: (ctx, ref, child) {
+                      final listLatestDarsNum =
+                          ref.watch(kutubLatestDarsNumFromSPProvider);
+                      return listLatestDarsNum.when(
+                        data: (objets2) {
+                          return Consumer(
+                            builder: (ctx, ref, child) {
+                              final latestAudioPositionList = ref
+                                  .watch(latestAudioPositionDarsFromSPProvider);
+                              return latestAudioPositionList.when(
+                                data: (objets2) {
+                                  return const MainWidget();
+                                },
+                                loading: () => Container(
+                                  height: double.infinity,
+                                  width: double.infinity,
+                                  padding: const EdgeInsets.only(top: 110),
+                                  decoration: BoxDecoration(
+                                    color: const Color.fromARGB(
+                                        255, 251, 251, 251),
+                                    image: DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: Image.asset(
+                                        'images/fond2.png',
+                                      ).image,
+                                    ),
+                                  ),
+                                  child: const Center(
+                                      child: CircularProgressIndicator(
+                                    color: Color.fromARGB(255, 212, 180, 124),
+                                  )),
+                                ),
+                                error: (error, _) => Text('Error: $error'),
+                              );
+                            },
+                          );
+                        },
+                        loading: () => Container(
+                          height: double.infinity,
+                          width: double.infinity,
+                          padding: const EdgeInsets.only(top: 110),
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 251, 251, 251),
+                            image: DecorationImage(
+                              fit: BoxFit.fill,
+                              image: Image.asset(
+                                'images/fond2.png',
+                              ).image,
+                            ),
+                          ),
+                          child: const Center(
+                              child: CircularProgressIndicator(
+                            color: Color.fromARGB(255, 212, 180, 124),
+                          )),
+                        ),
+                        error: (error, _) => Text('Error: $error'),
+                      );
+                    },
+                  );
                 },
                 loading: () => Container(
                   height: double.infinity,
@@ -62,7 +121,9 @@ class MyApp extends StatelessWidget {
                       ).image,
                     ),
                   ),
-                  child: const Center(child: CircularProgressIndicator()),
+                  child: const Center(
+                      child: CircularProgressIndicator(
+                          color: Color.fromARGB(255, 212, 180, 124))),
                 ),
                 error: (error, _) => Text('Error: $error'),
               );
@@ -183,37 +244,7 @@ class MainWidget extends ConsumerWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Consumer(
-                                builder: (context, ref, child) {
-                                  final indexFromSP =
-                                      ref.watch(darsNumFromSPProvider);
-
-                                  return indexFromSP.when(
-                                    data: (data) {
-                                      return Consumer(
-                                        builder: (context, ref, child) {
-                                          final darsAudioFromSP = ref.watch(
-                                              darsAudioPositionFromSPProvider);
-
-                                          return darsAudioFromSP.when(
-                                            data: (data) {
-                                              return const ReaderWidget();
-                                            },
-                                            loading: () =>
-                                                const CircularProgressIndicator(),
-                                            error: (error, _) =>
-                                                Text('Error: $error'),
-                                          );
-                                        },
-                                      );
-                                    },
-                                    loading: () => const Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                    error: (error, _) => Text('Error: $error'),
-                                  );
-                                },
-                              ),
+                              builder: (context) => const ReaderWidget(),
                             ),
                           ),
                         },
@@ -260,21 +291,7 @@ class MainWidget extends ConsumerWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Consumer(
-                                builder: (context, ref, child) {
-                                  final indexFromSP =
-                                      ref.watch(darsNumFromSPProvider);
-                                  return indexFromSP.when(
-                                    data: (data) {
-                                      return const ReaderWidget();
-                                    },
-                                    loading: () => const Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                    error: (error, _) => Text('Error: $error'),
-                                  );
-                                },
-                              ),
+                              builder: (context) => const ReaderWidget(),
                             ),
                           ),
                         },
@@ -326,21 +343,7 @@ class MainWidget extends ConsumerWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Consumer(
-                                builder: (context, ref, child) {
-                                  final indexFromSP =
-                                      ref.watch(darsNumFromSPProvider);
-                                  return indexFromSP.when(
-                                    data: (data) {
-                                      return const ReaderWidget();
-                                    },
-                                    loading: () => const Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                    error: (error, _) => Text('Error: $error'),
-                                  );
-                                },
-                              ),
+                              builder: (context) => const ReaderWidget(),
                             ),
                           ),
                         },
@@ -387,21 +390,7 @@ class MainWidget extends ConsumerWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Consumer(
-                                builder: (context, ref, child) {
-                                  final indexFromSP =
-                                      ref.watch(darsNumFromSPProvider);
-                                  return indexFromSP.when(
-                                    data: (data) {
-                                      return const ReaderWidget();
-                                    },
-                                    loading: () => const Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                    error: (error, _) => Text('Error: $error'),
-                                  );
-                                },
-                              ),
+                              builder: (context) => const ReaderWidget(),
                             ),
                           ),
                         },
@@ -448,21 +437,7 @@ class MainWidget extends ConsumerWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Consumer(
-                                builder: (context, ref, child) {
-                                  final indexFromSP =
-                                      ref.watch(darsNumFromSPProvider);
-                                  return indexFromSP.when(
-                                    data: (data) {
-                                      return const ReaderWidget();
-                                    },
-                                    loading: () => const Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                    error: (error, _) => Text('Error: $error'),
-                                  );
-                                },
-                              ),
+                              builder: (context) => const ReaderWidget(),
                             ),
                           ),
                         },
@@ -478,3 +453,20 @@ class MainWidget extends ConsumerWidget {
     );
   }
 }
+
+
+/*Consumer(
+                                builder: (context, ref, child) {
+                                  final indexFromSP =
+                                      ref.watch(darsNumFromSPProvider);
+                                  return indexFromSP.when(
+                                    data: (data) {
+                                      return const ReaderWidget();
+                                    },
+                                    loading: () => const Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                    error: (error, _) => Text('Error: $error'),
+                                  );
+                                },
+                              ),*/
