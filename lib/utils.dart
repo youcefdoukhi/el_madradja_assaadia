@@ -109,9 +109,10 @@ Future<List<List<int>>> getLatestAudioPositionDarsFromSP() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? encodedList = prefs.getString('latestAudioPositionDarsList');
   if (encodedList != null) {
-    List<dynamic> decodedList = json.decode(encodedList);
-    List<List<int>> myList =
-        decodedList.map<List<int>>((item) => List<int>.from(item)).toList();
+    List<List<int>> myList = json
+        .decode(encodedList)
+        .map<List<int>>((item) => List<int>.from(item))
+        .toList();
     return myList;
   } else {
     return [
