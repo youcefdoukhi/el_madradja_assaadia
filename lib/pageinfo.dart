@@ -223,7 +223,7 @@ class MyPageInfo extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     List<int> darsNumList = ref.watch(darsNumProvider);
-    int page = darsNumList[ref.read(kitabNumProvider) - 1];
+    int page = darsNumList[ref.read(kitabNumProvider)];
     return Visibility(
       visible: ref.watch(showPageInfoProvider),
       child: Column(
@@ -267,7 +267,7 @@ class MyPageInfo extends ConsumerWidget {
                               child: FractionallySizedBox(
                                 heightFactor: 1,
                                 child: Text(
-                                  "${ref.watch(kitabNumProvider)}",
+                                  "${ref.watch(kitabNumProvider) + 1}",
                                   style: const TextStyle(
                                     fontFamily: fontTitre,
                                     color: Colors.white,

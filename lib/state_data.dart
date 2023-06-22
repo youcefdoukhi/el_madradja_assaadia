@@ -20,7 +20,7 @@ final kitabDataProvider = FutureProvider<Dourous>((ref) async {
 
 final kitabNumProvider = StateProvider<int>(
   (ref) {
-    return 1;
+    return 0;
   },
 );
 
@@ -32,6 +32,13 @@ final kutubLatestDarsNumFromSPProvider = FutureProvider<List<int>>((ref) async {
 });
 
 final darsNumProvider = StateProvider<List<int>>(
+  (ref) {
+    final futureValue = ref.watch(kutubLatestDarsNumFromSPProvider);
+    return futureValue.asData?.value ?? [0, 0, 0, 0, 0];
+  },
+);
+
+final previousDarsNumProvider = StateProvider<List<int>>(
   (ref) {
     final futureValue = ref.watch(kutubLatestDarsNumFromSPProvider);
     return futureValue.asData?.value ?? [0, 0, 0, 0, 0];
@@ -66,12 +73,12 @@ final audioPositionDarsProvider = StateProvider<List<List<int>>>(
 final darsAudioPathProvider = StateProvider<String>(
   (ref) {
     final int kitabNum = ref.watch(kitabNumProvider);
-    final darsNum = ref.watch(darsNumProvider)[kitabNum - 1];
+    final darsNum = ref.watch(darsNumProvider)[kitabNum];
     String filePath = "/MP3/";
     if (kitabNum < 10) {
-      filePath = "${filePath}0${kitabNum}_";
+      filePath = "${filePath}0${kitabNum + 1}_";
     } else {
-      filePath = "$filePath${kitabNum}_";
+      filePath = "$filePath${kitabNum + 1}_";
     }
 
     if (darsNum < 10) {
@@ -120,6 +127,9 @@ class AudioPlayerController extends ChangeNotifier {
 
   Future<void> setSource(String filePath) async {
     audioPlayer.pause();
+    duration = Duration.zero;
+    position = Duration.zero;
+
     String path = (await getApplicationDocumentsDirectory()).absolute.path;
     File file = File("$path$filePath");
     if (file.existsSync()) {

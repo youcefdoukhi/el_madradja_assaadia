@@ -89,7 +89,7 @@ Future<List<int>> getKutubLatestDarsNumFromSP() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? encodedList = prefs.getString('kutubLatestDarsNumList');
   if (encodedList != null) {
-    List<int> decodedList = json.decode(encodedList);
+    List<dynamic> decodedList = json.decode(encodedList);
     List<int> integerList = List<int>.from(decodedList);
     return integerList;
   } else {

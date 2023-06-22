@@ -240,7 +240,7 @@ class MainWidget extends ConsumerWidget {
                       InkWell(
                         onTap: () => {
                           ref.read(showPageInfoProvider.notifier).state = false,
-                          ref.read(kitabNumProvider.notifier).state = 1,
+                          ref.read(kitabNumProvider.notifier).state = 0,
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -287,7 +287,7 @@ class MainWidget extends ConsumerWidget {
                       InkWell(
                         onTap: () => {
                           ref.read(showPageInfoProvider.notifier).state = false,
-                          ref.read(kitabNumProvider.notifier).state = 2,
+                          ref.read(kitabNumProvider.notifier).state = 1,
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -339,7 +339,7 @@ class MainWidget extends ConsumerWidget {
                       InkWell(
                         onTap: () => {
                           ref.read(showPageInfoProvider.notifier).state = false,
-                          ref.read(kitabNumProvider.notifier).state = 3,
+                          ref.read(kitabNumProvider.notifier).state = 2,
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -386,7 +386,7 @@ class MainWidget extends ConsumerWidget {
                       InkWell(
                         onTap: () => {
                           ref.read(showPageInfoProvider.notifier).state = false,
-                          ref.read(kitabNumProvider.notifier).state = 4,
+                          ref.read(kitabNumProvider.notifier).state = 3,
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -433,7 +433,7 @@ class MainWidget extends ConsumerWidget {
                       InkWell(
                         onTap: () => {
                           ref.read(showPageInfoProvider.notifier).state = false,
-                          ref.read(kitabNumProvider.notifier).state = 5,
+                          ref.read(kitabNumProvider.notifier).state = 4,
                           Navigator.push(
                             context,
                             MaterialPageRoute(

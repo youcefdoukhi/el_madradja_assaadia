@@ -59,9 +59,8 @@ class TOCWidget extends ConsumerWidget {
                       onTap: () => {
                         ref.read(scrollOrNotProvider.notifier).state = false,
                         ref
-                                .read(darsNumProvider.notifier)
-                                .state[ref.read(kitabNumProvider) - 1] =
-                            objet.page - 1,
+                            .read(darsNumProvider.notifier)
+                            .state[ref.read(kitabNumProvider)] = objet.page - 1,
                         ref.read(showPageInfoProvider.notifier).state = false,
                         ref
                             .read(playerProvider)

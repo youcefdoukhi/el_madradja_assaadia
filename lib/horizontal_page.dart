@@ -7,10 +7,17 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 class HorizontalPage extends ConsumerWidget {
   const HorizontalPage({super.key});
 
+  void modifyaudioPositionDars(WidgetRef ref, int kitabNum, int darsNum) {
+    List<List<int>> originalList = [...ref.read(audioPositionDarsProvider)];
+
+    originalList[kitabNum][darsNum] =
+        ref.read(playerProvider).position.inSeconds;
+    ref.read(audioPositionDarsProvider.notifier).state = [...originalList];
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final int darsNum =
-        ref.read(darsNumProvider)[ref.read(kitabNumProvider) - 1];
+    final int darsNum = ref.read(darsNumProvider)[ref.read(kitabNumProvider)];
 
     final PageController pageController = PageController(initialPage: darsNum);
 
@@ -20,7 +27,7 @@ class HorizontalPage extends ConsumerWidget {
       darsNumProvider,
       (List<int>? previousCount, List<int> newCount) {
         if (ref.read(scrollOrNotProvider) == false) {
-          pageController.jumpToPage(newCount[ref.read(kitabNumProvider) - 1]);
+          pageController.jumpToPage(newCount[ref.read(kitabNumProvider)]);
 
           ref.read(scrollOrNotProvider.notifier).state = true;
         }
@@ -41,13 +48,29 @@ class HorizontalPage extends ConsumerWidget {
                 scrollDirection: Axis.horizontal,
                 controller: pageController,
                 onPageChanged: (int page) => {
+                  //******************************************
+                  ref.read(previousDarsNumProvider.notifier).state = [
+                    ...ref.read(darsNumProvider)
+                  ],
+                  //********************************************
+
+                  modifyaudioPositionDars(
+                    ref,
+                    ref.read(kitabNumProvider),
+                    ref.read(
+                        previousDarsNumProvider)[ref.read(kitabNumProvider)],
+                  ),
+
+                  //********************************************
                   ref.read(darsNumProvider.notifier).state = [
-                    ...ref.read(darsNumProvider.notifier).state
-                  ]..[ref.read(kitabNumProvider) - 1] = page,
+                    ...ref.read(darsNumProvider)
+                  ]..[ref.read(kitabNumProvider)] = page,
+                  //********************************************
                   setKutubLatestDarsNumToSP(ref.read(darsNumProvider)),
                   ref
                       .read(playerProvider)
                       .setSource(ref.read(darsAudioPathProvider)),
+                  //*********************************************
                 },
                 itemBuilder: (context, index) {
                   final Dars dars = dourous[index];
