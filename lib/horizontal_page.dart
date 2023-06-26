@@ -17,7 +17,6 @@ class HorizontalPageState extends ConsumerState<HorizontalPage> {
   @override
   void initState() {
     super.initState();
-    print("\n AAAA : ${ref.read(audioPositionDarsProvider)} \n");
 
     pageController = PageController(
       initialPage: ref.read(darsNumProvider)[ref.read(kitabNumProvider)],
@@ -48,9 +47,24 @@ class HorizontalPageState extends ConsumerState<HorizontalPage> {
             [ref.read(darsNumProvider)[ref.read(kitabNumProvider)]]));
   }
 
+  //******************************* */
+
+  generateSafha(List<Nass> nassSafha) {
+    List<TextSpan> textSpans = nassSafha.map((paragraph) {
+      return TextSpan(text: paragraph.paragraph);
+    }).toList();
+    return Text.rich(
+      key: Key("index.toString()"),
+      textDirection: TextDirection.rtl,
+      textAlign: TextAlign.justify,
+      TextSpan(children: textSpans),
+    );
+  }
+
   @override
   void dispose() {
-    // Libérez les ressources ou annulez les abonnements ici
+    ref.read(playerProvider).release();
+
     super.dispose();
   }
 
@@ -113,8 +127,8 @@ class HorizontalPageState extends ConsumerState<HorizontalPage> {
                     itemScrollController: itemScrollController,
                     itemBuilder: (BuildContext context, int indexSafha) {
                       final Safha safha = safahat[indexSafha];
-                      final List<Nass> nass = safha.nass;
-                      return Text(nass[0].paragraph);
+                      final List<Nass> nassSafha = safha.nass;
+                      return generateSafha(nassSafha);
                     },
                   );
                 },
@@ -156,3 +170,23 @@ class AppBehavior extends ScrollBehavior {
     return child;
   }
 }
+
+/*
+WidgetSpan(
+      child: Align(
+        alignment: Alignment.center,
+        child: Text.rich(
+          textAlign: TextAlign.center,
+          TextSpan(
+            text: redTitle,
+            style: TextStyle(
+              color: charihColor,
+              fontSize: fontSize03,
+              fontFamily: fontText,
+            ),
+          ),
+        ),
+      ),
+    );
+
+*/

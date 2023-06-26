@@ -24,12 +24,6 @@ final kitabNumProvider = StateProvider<int>(
   },
 );
 
-final latestKitabNumProvider = StateProvider<int>(
-  (ref) {
-    return -1;
-  },
-);
-
 //***************************************************
 
 final kutubLatestDarsNumFromSPProvider = FutureProvider<List<int>>((ref) async {

@@ -433,10 +433,6 @@ class MyPageInfo extends ConsumerWidget {
               borderRadius: BorderRadius.circular(5),
             ),
             child: const MyAudioPlayer(),
-            /*   MyAudioPlayer2(
-                    kitab: ref.read(kitabNumProvider),
-                    dars: ref.read(darsIndexProvider),
-                  ),*/
           ),
           Expanded(
             child: Container(),
@@ -469,7 +465,7 @@ class MyPageInfo extends ConsumerWidget {
                               ),
                               child: InkWell(
                                 onTap: () {
-                                  //************************ */
+                                  ref.read(playerProvider).pause();
                                   modifyCurrentAudioPositionDars();
                                   Navigator.push(
                                     context,
