@@ -1,5 +1,6 @@
 import 'package:el_madradja_assaadia/state_data.dart';
 import 'package:el_madradja_assaadia/toc.dart';
+import 'package:el_madradja_assaadia/utils.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -222,6 +223,17 @@ class MyPageInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    modifyCurrentAudioPositionDars() {
+      int kitabNum = ref.read(kitabNumProvider);
+      int darsNum = ref.read(darsNumProvider)[kitabNum];
+      List<List<int>> originalList = [...ref.read(audioPositionDarsProvider)];
+
+      originalList[kitabNum][darsNum] =
+          ref.read(playerProvider).position.inSeconds;
+      ref.read(audioPositionDarsProvider.notifier).state = [...originalList];
+      setLatestAudioPositionDarsToSP(ref.read(audioPositionDarsProvider));
+    }
+
     List<int> darsNumList = ref.watch(darsNumProvider);
     int page = darsNumList[ref.read(kitabNumProvider)];
     return Visibility(
@@ -457,6 +469,8 @@ class MyPageInfo extends ConsumerWidget {
                               ),
                               child: InkWell(
                                 onTap: () {
+                                  //************************ */
+                                  modifyCurrentAudioPositionDars();
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(

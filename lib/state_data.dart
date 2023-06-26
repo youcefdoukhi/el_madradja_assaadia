@@ -24,6 +24,12 @@ final kitabNumProvider = StateProvider<int>(
   },
 );
 
+final latestKitabNumProvider = StateProvider<int>(
+  (ref) {
+    return -1;
+  },
+);
+
 //***************************************************
 
 final kutubLatestDarsNumFromSPProvider = FutureProvider<List<int>>((ref) async {
@@ -126,19 +132,22 @@ class AudioPlayerController extends ChangeNotifier {
   }
 
   Future<void> setSource(String filePath) async {
-    audioPlayer.pause();
-    duration = Duration.zero;
     position = Duration.zero;
+    audioPlayer.pause();
 
     String path = (await getApplicationDocumentsDirectory()).absolute.path;
     File file = File("$path$filePath");
     if (file.existsSync()) {
-      audioPlayer.setSourceDeviceFile(file.path);
+      await audioPlayer.setSourceDeviceFile(file.path);
       fileFound = true;
     } else {
       fileFound = false;
       _reset();
     }
+
+    Future(() {
+      notifyListeners();
+    });
   }
 
   Future<void> play() async {
@@ -179,8 +188,8 @@ class AudioPlayerController extends ChangeNotifier {
     }
   }
 
-  void _reset() {
-    audioPlayer.release();
+  Future<void> _reset() async {
+    await audioPlayer.release();
     duration = Duration.zero;
     position = Duration.zero;
     playerState = PlayerState.stopped;

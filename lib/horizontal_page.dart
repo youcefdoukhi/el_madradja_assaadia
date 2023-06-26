@@ -4,25 +4,58 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-class HorizontalPage extends ConsumerWidget {
+class HorizontalPage extends ConsumerStatefulWidget {
   const HorizontalPage({super.key});
 
-  void modifyaudioPositionDars(WidgetRef ref, int kitabNum, int darsNum) {
+  @override
+  HorizontalPageState createState() => HorizontalPageState();
+}
+
+class HorizontalPageState extends ConsumerState<HorizontalPage> {
+  late PageController pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    print("\n AAAA : ${ref.read(audioPositionDarsProvider)} \n");
+
+    pageController = PageController(
+      initialPage: ref.read(darsNumProvider)[ref.read(kitabNumProvider)],
+    );
+
+    setSourceAndGoToAudioPos();
+  }
+
+  setSourceAndGoToAudioPos() async {
+    await ref.read(playerProvider).setSource(ref.read(darsAudioPathProvider));
+    await goToAudioPosition();
+  }
+
+  modifyAudioPositionDars() {
+    int kitabNum = ref.read(kitabNumProvider);
+    int darsNum = ref.read(previousDarsNumProvider)[ref.read(kitabNumProvider)];
     List<List<int>> originalList = [...ref.read(audioPositionDarsProvider)];
 
     originalList[kitabNum][darsNum] =
         ref.read(playerProvider).position.inSeconds;
     ref.read(audioPositionDarsProvider.notifier).state = [...originalList];
+    setLatestAudioPositionDarsToSP(ref.read(audioPositionDarsProvider));
+  }
+
+  goToAudioPosition() async {
+    await ref.read(playerProvider).seek(Duration(
+        seconds: ref.read(audioPositionDarsProvider)[ref.read(kitabNumProvider)]
+            [ref.read(darsNumProvider)[ref.read(kitabNumProvider)]]));
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final int darsNum = ref.read(darsNumProvider)[ref.read(kitabNumProvider)];
+  void dispose() {
+    // Libérez les ressources ou annulez les abonnements ici
+    super.dispose();
+  }
 
-    final PageController pageController = PageController(initialPage: darsNum);
-
-    ref.read(playerProvider).setSource(ref.read(darsAudioPathProvider));
-
+  @override
+  Widget build(BuildContext context) {
     ref.listen<List<int>>(
       darsNumProvider,
       (List<int>? previousCount, List<int> newCount) {
@@ -47,30 +80,26 @@ class HorizontalPage extends ConsumerWidget {
                 pageSnapping: true,
                 scrollDirection: Axis.horizontal,
                 controller: pageController,
-                onPageChanged: (int page) => {
-                  //******************************************
+                onPageChanged: (int page) async => {
                   ref.read(previousDarsNumProvider.notifier).state = [
                     ...ref.read(darsNumProvider)
                   ],
-                  //********************************************
 
-                  modifyaudioPositionDars(
-                    ref,
-                    ref.read(kitabNumProvider),
-                    ref.read(
-                        previousDarsNumProvider)[ref.read(kitabNumProvider)],
-                  ),
-
+                  modifyAudioPositionDars(),
                   //********************************************
                   ref.read(darsNumProvider.notifier).state = [
                     ...ref.read(darsNumProvider)
                   ]..[ref.read(kitabNumProvider)] = page,
-                  //********************************************
+
                   setKutubLatestDarsNumToSP(ref.read(darsNumProvider)),
-                  ref
+                  //********************************************
+
+                  await ref
                       .read(playerProvider)
                       .setSource(ref.read(darsAudioPathProvider)),
+
                   //*********************************************
+                  await goToAudioPosition(),
                 },
                 itemBuilder: (context, index) {
                   final Dars dars = dourous[index];
