@@ -1,3 +1,4 @@
+import 'package:el_madradja_assaadia/safha.dart';
 import 'package:el_madradja_assaadia/state_data.dart';
 import 'package:el_madradja_assaadia/utils.dart';
 import 'package:flutter/material.dart';
@@ -45,20 +46,6 @@ class HorizontalPageState extends ConsumerState<HorizontalPage> {
     await ref.read(playerProvider).seek(Duration(
         seconds: ref.read(audioPositionDarsProvider)[ref.read(kitabNumProvider)]
             [ref.read(darsNumProvider)[ref.read(kitabNumProvider)]]));
-  }
-
-  //******************************* */
-
-  generateSafha(List<Nass> nassSafha) {
-    List<TextSpan> textSpans = nassSafha.map((paragraph) {
-      return TextSpan(text: paragraph.paragraph);
-    }).toList();
-    return Text.rich(
-      key: Key("index.toString()"),
-      textDirection: TextDirection.rtl,
-      textAlign: TextAlign.justify,
-      TextSpan(children: textSpans),
-    );
   }
 
   @override
@@ -128,7 +115,7 @@ class HorizontalPageState extends ConsumerState<HorizontalPage> {
                     itemBuilder: (BuildContext context, int indexSafha) {
                       final Safha safha = safahat[indexSafha];
                       final List<Nass> nassSafha = safha.nass;
-                      return generateSafha(nassSafha);
+                      return SafhaWidget(nass: nassSafha);
                     },
                   );
                 },
