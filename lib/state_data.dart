@@ -59,11 +59,11 @@ final audioPositionDarsProvider = StateProvider<List<List<int>>>(
     final futureValue = ref.watch(latestAudioPositionDarsFromSPProvider);
     return futureValue.asData?.value ??
         [
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0]
+          List<int>.filled(58, 0),
+          List<int>.filled(12, 0),
+          List<int>.filled(12, 0),
+          List<int>.filled(9, 0),
+          List<int>.filled(1, 0),
         ];
   },
 );

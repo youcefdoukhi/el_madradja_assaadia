@@ -467,7 +467,7 @@ class MyPageInfo extends ConsumerWidget {
                                 onTap: () {
                                   ref.read(playerProvider).pause();
                                   modifyCurrentAudioPositionDars();
-                                  Navigator.push(
+                                  Navigator.pop(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => const MyApp()),

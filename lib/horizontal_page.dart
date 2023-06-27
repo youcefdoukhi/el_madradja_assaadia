@@ -50,7 +50,7 @@ class HorizontalPageState extends ConsumerState<HorizontalPage> {
 
   @override
   void dispose() {
-    ref.read(playerProvider).release();
+    //ref.read(playerProvider).release();
 
     super.dispose();
   }

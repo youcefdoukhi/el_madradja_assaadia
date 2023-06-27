@@ -9,12 +9,12 @@ class SafhaWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     List<InlineSpan> textSpans = nass.map((paragraph) {
-      return paragraph.type == TypeParagraph.titre
+      return paragraph.type == TypeParagraph.h1
           ? WidgetSpan(
               child: Align(
                 alignment: Alignment.center,
                 child: Text(
-                  paragraph.paragraph,
+                  "\n${paragraph.paragraph}\n",
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -24,7 +24,7 @@ class SafhaWidget extends ConsumerWidget {
               ),
             )
           : TextSpan(
-              text: paragraph.paragraph,
+              text: "\n${paragraph.paragraph}",
               style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -47,6 +47,13 @@ class SafhaWidget extends ConsumerWidget {
     ]));
     return Container(
       padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: Colors.black,
+          width: 1.0,
+        ),
+      ),
       child: RichText(
         //key: const Key("index.toString()"),
         textDirection: TextDirection.rtl,

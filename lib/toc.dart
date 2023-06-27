@@ -7,6 +7,31 @@ class TOCWidget extends ConsumerWidget {
   static const fontText = "ScheherazadeNew";
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    getNbrDarssInBook() {
+      int nbrDarss = 0;
+      switch (ref.read(kitabNumProvider)) {
+        case 0:
+          nbrDarss = 58;
+          break;
+        case 1:
+          nbrDarss = 12;
+          break;
+        case 2:
+          nbrDarss = 12;
+          break;
+        case 3:
+          nbrDarss = 9;
+          break;
+        case 4:
+          nbrDarss = 1;
+          break;
+        default:
+          nbrDarss = 0;
+      }
+
+      return nbrDarss;
+    }
+
     final objets = ref
         .read(myDarssListProvider)
         .value!
@@ -29,7 +54,7 @@ class TOCWidget extends ConsumerWidget {
               padding: const EdgeInsets.all(15),
               child: const Text.rich(
                 TextSpan(
-                  text: "فهرس القرآن الكريم",
+                  text: "فهرس الدروس",
                   style: TextStyle(
                     fontSize: 16,
                     fontFamily: fontText,
@@ -50,7 +75,8 @@ class TOCWidget extends ConsumerWidget {
                   overScroll.disallowIndicator();
                   return false;
                 },
-                child: ListView.separated(
+                child:
+                    /* ListView.separated(
                   padding: const EdgeInsets.all(8),
                   itemCount: objets.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -114,6 +140,74 @@ class TOCWidget extends ConsumerWidget {
                                     ),
                                   ),
                                 ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) =>
+                      const Divider(
+                    //indent: 50,
+                    //endIndent: 50,
+                    color: Color.fromRGBO(233, 218, 193, 1),
+                  ),
+                ),*/
+                    ListView.separated(
+                  padding: const EdgeInsets.all(8),
+                  itemCount: getNbrDarssInBook(),
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: () => {
+                        ref.read(scrollOrNotProvider.notifier).state = false,
+                        ref
+                            .read(darsNumProvider.notifier)
+                            .state[ref.read(kitabNumProvider)] = index,
+                        ref.read(showPageInfoProvider.notifier).state = false,
+                        ref
+                            .read(playerProvider)
+                            .setSource(ref.read(darsAudioPathProvider)),
+                        Navigator.pop(context),
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                        height: 40.0,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Column(
+                                children: [
+                                  const Flexible(
+                                    child: FractionallySizedBox(
+                                      heightFactor: 1,
+                                      child: Text(
+                                        "درس رقم",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Flexible(
+                                    child: FractionallySizedBox(
+                                      heightFactor: 1,
+                                      child: Text("${index + 1}"),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              flex: 5,
+                              child: Container(
+                                padding: const EdgeInsets.only(
+                                  right: 10,
+                                ),
+                                alignment: Alignment.centerRight,
+                                child: const Text("العنوان :"),
                               ),
                             ),
                           ],

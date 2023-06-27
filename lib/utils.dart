@@ -2,21 +2,21 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-enum TypeParagraph {
-  titre,
-  sousTitre,
-  centerTitre,
-  centerSousTitre,
-  texte,
-  ayah,
-  hadith,
-  erreur
-}
+enum TypeParagraph { h1, h2, h3, h4, h5, h6, pm, pc, ayah, hadith, erreur }
 
-TypeParagraph convertirEnEnum(String valeur) {
+TypeParagraph txt2TypeParag(String valeur) {
   return TypeParagraph.values.firstWhere(
     (element) => element.toString() == 'TypeParagraph.$valeur',
     orElse: () => TypeParagraph.erreur,
+  );
+}
+
+enum TypeNewLine { n, nn, nc, erreur }
+
+TypeNewLine txt2TypeNewLine(String valeur) {
+  return TypeNewLine.values.firstWhere(
+    (element) => element.toString() == 'TypeNewLine.$valeur',
+    orElse: () => TypeNewLine.erreur,
   );
 }
 
@@ -63,15 +63,15 @@ class Safha {
 
 class Nass {
   final TypeParagraph type;
-  final bool newLine;
+  final TypeNewLine newLine;
   final String paragraph;
 
   Nass({required this.type, required this.newLine, required this.paragraph});
 
   factory Nass.fromJson(Map<String, dynamic> json) {
     return Nass(
-      type: convertirEnEnum(json['type']),
-      newLine: json['newLine'],
+      type: txt2TypeParag(json['type']),
+      newLine: txt2TypeNewLine(json['newLine']),
       paragraph: json['paragraph'],
     );
   }
@@ -116,11 +116,11 @@ Future<List<List<int>>> getLatestAudioPositionDarsFromSP() async {
     return myList;
   } else {
     return [
-      [0, 0],
-      [0, 0],
-      [0, 0],
-      [0, 0],
-      [0, 0]
+      List<int>.filled(58, 0),
+      List<int>.filled(12, 0),
+      List<int>.filled(12, 0),
+      List<int>.filled(9, 0),
+      List<int>.filled(1, 0),
     ];
   }
 }

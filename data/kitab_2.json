@@ -6,21 +6,15 @@
           {
             "numsafha": 1,
             "texte": [
-
                 {
-                    "type":"texte",
-                    "newLine" : true,
-                    "paragraph":"paraf 1 page 1 darss 1 kitab 3"
+                    "type":"h1",
+                    "newLine" : "nn",
+                    "paragraph": ""
                 },
                 {
-                    "type":"texte",
-                    "newLine" : true,
-                    "paragraph":"paraf 2 page 1 darss 1 kitab 3"
-                },
-                {
-                    "type":"texte",
-                    "newLine" : true,
-                    "paragraph":"paraf 3 page 1 darss 1 kitab 3"
+                    "type":"pc",
+                    "newLine" : "nn",
+                    "paragraph":""
                 }
             ]
           },
@@ -29,112 +23,56 @@
             "texte": [
 
                 {
-                    "type":"texte",
-                    "newLine" : true,
-                    "paragraph":"paraf 1 page 2 darss 1 kitab 3"
+                    "type":"h1",
+                    "newLine" : "nn",
+                    "paragraph": ""
                 },
                 {
-                    "type":"texte",
-                    "newLine" : true,
-                    "paragraph":"paraf 2 page 2 darss 1 kitab 3"
-                },
-                {
-                    "type":"texte",
-                    "newLine" : true,
-                    "paragraph":"paraf 3 page 2 darss 1 kitab 3"
-                }
-            ]
-          },
-          {
-            "numsafha": 3,
-            "texte": [
-
-                {
-                    "type":"texte",
-                    "newLine" : true,
-                    "paragraph":"paraf 1 page 3 darss 1 kitab 3"
-                },
-                {
-                    "type":"texte",
-                    "newLine" : true,
-                    "paragraph":"paraf 2 page 3 darss 1 kitab 3"
-                },
-                {
-                    "type":"texte",
-                    "newLine" : true,
-                    "paragraph":"paraf 3 page 3 darss 1 kitab 3"
+                    "type":"pc",
+                    "newLine" : "nn",
+                    "paragraph":""
                 }
             ]
           }
+         
         ]
       },
       {
         "numdarss": 2,
         "safahat": [
-          {
-            "numsafha": 1,
-            "texte": [
-
-                {
-                    "type":"texte",
-                    "newLine" : true,
-                    "paragraph":"paraf 1 page 1 darss 2 kitab 3"
-                },
-                {
-                    "type":"texte",
-                    "newLine" : true,
-                    "paragraph":"paraf 2 page 1 darss 2 kitab 3"
-                },
-                {
-                    "type":"texte",
-                    "newLine" : true,
-                    "paragraph":"paraf 3 page 1 darss 2 kitab 3"
-                }
-            ]
-          },
-          {
-            "numsafha": 2,
-            "texte": [
-
-                {
-                    "type":"texte",
-                    "newLine" : true,
-                    "paragraph":"paraf 1 page 2 darss 2 kitab 3"
-                },
-                {
-                    "type":"texte",
-                    "newLine" : true,
-                    "paragraph":"paraf 2 page 2 darss 2 kitab 3"
-                },
-                {
-                    "type":"texte",
-                    "newLine" : true,
-                    "paragraph":"paraf 3 page 2 darss 2 kitab 3"
-                }
-            ]
-          },
-          {
-            "numsafha": 3,
-            "texte": [
-
-                {
-                    "type":"texte",
-                    "newLine" : true,
-                    "paragraph":"paraf 1 page 3 darss 2 kitab 3"
-                },
-                {
-                    "type":"texte",
-                    "newLine" : true,
-                    "paragraph":"paraf 2 page 3 darss 2 kitab 3"
-                },
-                {
-                    "type":"texte",
-                    "newLine" : true,
-                    "paragraph":"paraf 3 page 3 darss 2 kitab 3"
-                }
-            ]
-          }
-        ]
+            {
+              "numsafha": 1,
+              "texte": [
+                  {
+                      "type":"h1",
+                      "newLine" : "nn",
+                      "paragraph": ""
+                  },
+                  {
+                      "type":"pc",
+                      "newLine" : "nn",
+                      "paragraph":""
+                  }
+              ]
+            },
+            {
+              "numsafha": 2,
+              "texte": [
+  
+                  {
+                      "type":"h1",
+                      "newLine" : "nn",
+                      "paragraph": ""
+                  },
+                  {
+                      "type":"pc",
+                      "newLine" : "nn",
+                      "paragraph":""
+                  }
+              ]
+            }
+           
+          ]
       }
       
       
