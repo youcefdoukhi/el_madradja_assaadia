@@ -1,4 +1,5 @@
 import 'package:el_madradja_assaadia/state_data.dart';
+import 'package:el_madradja_assaadia/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -7,6 +8,25 @@ class TOCWidget extends ConsumerWidget {
   static const fontText = "ScheherazadeNew";
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    modifyAudioPositionDars() {
+      int kitabNum = ref.read(kitabNumProvider);
+      int darsNum =
+          ref.read(previousDarsNumProvider)[ref.read(kitabNumProvider)];
+      List<List<int>> originalList = [...ref.read(audioPositionDarsProvider)];
+
+      originalList[kitabNum][darsNum] =
+          ref.read(playerProvider).position.inSeconds;
+      ref.read(audioPositionDarsProvider.notifier).state = [...originalList];
+      setLatestAudioPositionDarsToSP(ref.read(audioPositionDarsProvider));
+    }
+
+    goToAudioPosition() async {
+      await ref.read(playerProvider).seek(Duration(
+          seconds:
+              ref.read(audioPositionDarsProvider)[ref.read(kitabNumProvider)]
+                  [ref.read(darsNumProvider)[ref.read(kitabNumProvider)]]));
+    }
+
     getNbrDarssInBook() {
       int nbrDarss = 0;
       switch (ref.read(kitabNumProvider)) {
@@ -32,11 +52,6 @@ class TOCWidget extends ConsumerWidget {
       return nbrDarss;
     }
 
-    final objets = ref
-        .read(myDarssListProvider)
-        .value!
-        .where((objet) => objet.kitab == 1)
-        .toList();
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -65,8 +80,8 @@ class TOCWidget extends ConsumerWidget {
               ),
             ),
             const Divider(
-              //indent: 50,
-              //endIndent: 50,
+              indent: 50,
+              endIndent: 50,
               color: Color.fromRGBO(233, 218, 193, 1),
             ),
             Expanded(
@@ -75,99 +90,26 @@ class TOCWidget extends ConsumerWidget {
                   overScroll.disallowIndicator();
                   return false;
                 },
-                child:
-                    /* ListView.separated(
-                  padding: const EdgeInsets.all(8),
-                  itemCount: objets.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final objet = objets[index];
-                    return GestureDetector(
-                      onTap: () => {
-                        ref.read(scrollOrNotProvider.notifier).state = false,
-                        ref
-                            .read(darsNumProvider.notifier)
-                            .state[ref.read(kitabNumProvider)] = objet.page - 1,
-                        ref.read(showPageInfoProvider.notifier).state = false,
-                        ref
-                            .read(playerProvider)
-                            .setSource(ref.read(darsAudioPathProvider)),
-                        Navigator.pop(context),
-                      },
-                      child: Container(
-                        color: Colors.transparent,
-                        height: 40.0,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Container(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "${objet.index}",
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 4,
-                              child: Container(
-                                padding: const EdgeInsets.only(
-                                  right: 10,
-                                ),
-                                alignment: Alignment.centerRight,
-                                child: Text(objet.name),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Column(
-                                children: [
-                                  const Flexible(
-                                    child: FractionallySizedBox(
-                                      heightFactor: 1,
-                                      child: Text(
-                                        "ص",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 13,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Flexible(
-                                    child: FractionallySizedBox(
-                                      heightFactor: 1,
-                                      child: Text("${objet.page}"),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const Divider(
-                    //indent: 50,
-                    //endIndent: 50,
-                    color: Color.fromRGBO(233, 218, 193, 1),
-                  ),
-                ),*/
-                    ListView.separated(
+                child: ListView.separated(
                   padding: const EdgeInsets.all(8),
                   itemCount: getNbrDarssInBook(),
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
-                      onTap: () => {
+                      onTap: () async => {
                         ref.read(scrollOrNotProvider.notifier).state = false,
-                        ref
-                            .read(darsNumProvider.notifier)
-                            .state[ref.read(kitabNumProvider)] = index,
+                        ref.read(previousDarsNumProvider.notifier).state = [
+                          ...ref.read(darsNumProvider)
+                        ],
+                        modifyAudioPositionDars(),
+                        ref.read(darsNumProvider.notifier).state = [
+                          ...ref.read(darsNumProvider)
+                        ]..[ref.read(kitabNumProvider)] = index,
+                        setKutubLatestDarsNumToSP(ref.read(darsNumProvider)),
                         ref.read(showPageInfoProvider.notifier).state = false,
-                        ref
+                        await ref
                             .read(playerProvider)
                             .setSource(ref.read(darsAudioPathProvider)),
+                        await goToAudioPosition(),
                         Navigator.pop(context),
                       },
                       child: Container(

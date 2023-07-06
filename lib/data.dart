@@ -3,7 +3,7 @@ class DownloadItems {
     return book01[numCourse];
   }
 
-  static const link = "http://10.1.1.19/el_madradja/";
+  static const link = "http://10.1.1.3/el_madradja/";
   static const book01 = [
     DownloadItem(
       name: 'الدرس 01',
