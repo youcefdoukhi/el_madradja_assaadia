@@ -43,9 +43,13 @@ class HorizontalPageState extends ConsumerState<HorizontalPage> {
   }
 
   goToAudioPosition() async {
-    await ref.read(playerProvider).seek(Duration(
-        seconds: ref.read(audioPositionDarsProvider)[ref.read(kitabNumProvider)]
-            [ref.read(darsNumProvider)[ref.read(kitabNumProvider)]]));
+    await ref.read(playerProvider).seek(
+          Duration(
+            seconds:
+                ref.read(audioPositionDarsProvider)[ref.read(kitabNumProvider)]
+                    [ref.read(darsNumProvider)[ref.read(kitabNumProvider)]],
+          ),
+        );
   }
 
   @override

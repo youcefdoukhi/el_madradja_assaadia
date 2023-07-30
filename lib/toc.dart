@@ -100,16 +100,16 @@ class TOCWidget extends ConsumerWidget {
                         ref.read(previousDarsNumProvider.notifier).state = [
                           ...ref.read(darsNumProvider)
                         ],
-                        modifyAudioPositionDars(),
+                        //   modifyAudioPositionDars(),
                         ref.read(darsNumProvider.notifier).state = [
                           ...ref.read(darsNumProvider)
                         ]..[ref.read(kitabNumProvider)] = index,
                         setKutubLatestDarsNumToSP(ref.read(darsNumProvider)),
-                        ref.read(showPageInfoProvider.notifier).state = false,
                         await ref
                             .read(playerProvider)
                             .setSource(ref.read(darsAudioPathProvider)),
-                        await goToAudioPosition(),
+                        //   await goToAudioPosition(),
+                        ref.read(showPageInfoProvider.notifier).state = false,
                         Navigator.pop(context),
                       },
                       child: Container(
